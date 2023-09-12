@@ -1,0 +1,30 @@
+.header{
+    padding: 10px 120px;
+    background-color: aqua;
+
+    &__right{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+              
+        &__shoppingcart{
+            margin: 10px;
+            font-size: 30px;
+        }
+    }
+    &__center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__left{
+        text-align: left;
+        font-size: 18px;
+        color: #fff;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+}
