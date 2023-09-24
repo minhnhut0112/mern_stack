@@ -1,0 +1,38 @@
+.category{
+    padding: 0 70px;
+
+    &__title{
+        text-align: start;
+    }
+
+    &__filters{
+        display: flex;
+        justify-content: flex-end;
+
+        select{
+            text-align: center;
+            width: 150px;
+            height: 25px;
+            border: none;
+            font-size: 20px;
+            margin-bottom: 10px;
+
+            option{
+                background-color: white;
+            }
+        }
+
+    }
+
+    &__listcard{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    &__pagination{
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+}

@@ -1,0 +1,31 @@
+.homepage{
+   padding: 0 70px;
+
+   &__title{
+    text-align: center;
+    margin-top:50px;
+   }
+
+   &__card{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+   }
+
+   &__button{
+      margin-top: 20px;
+      text-align: center;
+      button{
+         width: 180px;
+         height: 40px;
+         background-color: white;
+         border-radius: 5px;
+         border-color: #5ecde1;
+      }
+      button:hover{
+         background-color: #3caee2;
+         color: white;
+      }
+   }
+}
+

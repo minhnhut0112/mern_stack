@@ -1,55 +1,34 @@
-import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Col, Dropdown, Row } from "antd";
-import Search from "antd/es/input/Search";
 import React from "react";
-import "./style.scss";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import Badge from "@mui/material/Badge";
+import Grid from "@mui/material/Grid";
 
-const items = [
-  {
-    key: "1",
-    label: "as",
-  },
-  {
-    key: "2",
-    label: "a danger item",
-  },
-];
+import "./style.scss";
+import UserComponent from "./UserComponent/UserComponent";
+import SearchComponent from "./SearchComponent/SearchComponent";
+import CategoryComponent from "./CategoryComponent/CategoryComponent";
 
 const HeaderComponent = () => {
+  const category = ["New & Feature", "Jordan", "Runing", "Football"];
+
   return (
-    <div>
-      <Row className="header">
-        <Col className="header__left" span={6}>
-          SPACE SNEAKERS
-        </Col>
-        <Col className="header__center" span={10}>
-          col-8
-        </Col>
-        <Col className="header__right" span={8}>
-          <div>
-            <Search
-              placeholder="search"
-              allowClear
-              // onSearch={onSearch}
-              style={{
-                width: 150,
-              }}
-            />
-          </div>
-          <div className="header__right__shoppingcart">
-            <ShoppingCartOutlined />
-          </div>
-          <div></div>
-          <div>
-            <Dropdown menu={{ items }}>
-              <button href="#" onClick={(e) => e.preventDefault()}>
-                <Avatar icon={<UserOutlined />} />
-              </button>
-            </Dropdown>
-          </div>
-        </Col>
-      </Row>
-    </div>
+    <Grid container className="header">
+      <Grid className="header__logo" item xs={3}>
+        SPACE SNEAKERS
+      </Grid>
+      <Grid className="header__category" item xs={6}>
+        {category.map((item) => (
+          <CategoryComponent name={item} key={item} />
+        ))}
+      </Grid>
+      <Grid className="header__icon" item xs={3}>
+        <SearchComponent />
+        <Badge badgeContent={4} color="primary">
+          <ShoppingCartOutlinedIcon />
+        </Badge>
+        <UserComponent />
+      </Grid>
+    </Grid>
   );
 };
 

@@ -10,7 +10,9 @@ function App() {
         <Routes>
           {routes.map((route) => {
             const Page = route.page;
-            const Layout = route.showHeader ? DefaultComponent : Fragment;
+            const Layout = route.showHeaderAndFooter
+              ? DefaultComponent
+              : Fragment;
             return (
               <Route
                 key={route.path}
