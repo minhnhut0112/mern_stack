@@ -3,11 +3,7 @@ import ProductdetailComponent from "../../components/ProductDetailComponent/Prod
 import "./style.scss";
 
 const ProductDetailPage = () => {
-  return (
-    <div className="detail">
-      <ProductdetailComponent />
-    </div>
-  );
+  return <ProductdetailComponent />;
 };
 
 export default ProductDetailPage;

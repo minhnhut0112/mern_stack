@@ -1,31 +1,20 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import React from "react";
-import product1 from "../../assets/image/12.jpg";
+import product1 from "../../assets/image/nike1.1.jpg";
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const CardComponent = () => {
   return (
-    <div>
-      <Card className="card">
-        <img src={product1} className="image" alt="card" height={350} />
-        <CardContent>
-          <Typography
-            gutterBottom
-            variant="h5"
-            textAlign={"center"}
-            component="div"
-          >
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Jordan
-          </Typography>
-          <Typography>235$</Typography>
-        </CardContent>
-      </Card>
-    </div>
+    <Link to="/product-detail">
+      <div className="box">
+        <div className="box__image">
+          <img src={product1} alt="product1" />
+        </div>
+        <h4>NIKE 234</h4>
+        <h5>Jordan</h5>
+        <p>234$</p>
+      </div>
+    </Link>
   );
 };
 

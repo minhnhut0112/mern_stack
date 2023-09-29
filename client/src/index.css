@@ -1,2 +1,6 @@
 @import "~slick-carousel/slick/slick.css"; 
 @import "~slick-carousel/slick/slick-theme.css";
+*{
+    text-decoration: none;
+    /* font-family: "Helvetica Now Text",Helvetica,Arial,sans-serif; */
+}

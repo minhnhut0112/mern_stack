@@ -1,4 +1,3 @@
-import Logout from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -8,6 +7,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
+import avatar from "../../../assets/image/avata.jpg";
+import { Link } from "react-router-dom";
+import LoginIcon from "@mui/icons-material/Login";
 
 const UserComponent = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,7 +31,7 @@ const UserComponent = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+            <Avatar sx={{ width: 32, height: 32 }} src={avatar}></Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -42,14 +44,24 @@ const UserComponent = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My order</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link style={{ color: "black" }} to="/myprofile">
+            My Profile
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link style={{ color: "black" }} to="/myorder">
+            My Order
+          </Link>
+        </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
+          <Link style={{ color: "black" }} to="/sign-in">
+            <ListItemIcon>
+              <LoginIcon fontSize="small" />
+            </ListItemIcon>
+            Log in
+          </Link>
         </MenuItem>
       </Menu>
     </div>

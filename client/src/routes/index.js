@@ -1,11 +1,11 @@
 import HomePage from "../pages/HomePage/HomePage";
-import ProductPage from "../pages/ProductPage/ProductPage";
-import OrderPage from "../pages/OrderPage/OrderPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
-import TypeProduct from "../pages/TypeProduct/TypeProduct";
+import OrderPage from "../pages/OrderPage/OrderPage";
+import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
+import ProductPage from "../pages/ProductPage/ProductPage";
 import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
-import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
+import TypeProduct from "../pages/TypeProduct/TypeProduct";
 
 export const routes = [
   {
@@ -31,16 +31,21 @@ export const routes = [
   {
     path: "/sign-in",
     page: SignInPage,
-    showHeaderAndFooter: true,
+    showHeaderAndFooter: false,
   },
   {
     path: "/sign-up",
     page: SignUpPage,
-    showHeaderAndFooter: true,
+    showHeaderAndFooter: false,
   },
   {
     path: "/product-detail",
     page: ProductDetailPage,
+    showHeaderAndFooter: true,
+  },
+  {
+    path: "/order",
+    page: OrderPage,
     showHeaderAndFooter: true,
   },
 

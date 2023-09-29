@@ -4,8 +4,8 @@ import "./style.scss";
 const SearchComponent = () => {
   return (
     <div className="search">
-      <SearchIcon id="search-icon" />
-      <input placeholder="Search..." />
+      <SearchIcon style={{ color: "black" }} id="search-icon" />
+      <input placeholder="Search..." type="search" />
     </div>
   );
 };
