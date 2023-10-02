@@ -1,6 +1,4 @@
 const Product = require("../models/ProductModel");
-const bcrypt = require("bcrypt");
-const { all } = require("../routes/ProductRouter");
 
 const createProduct = (newProduct) => {
   return new Promise(async (resolve, reject) => {
