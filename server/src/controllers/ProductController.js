@@ -1,4 +1,4 @@
-const ProductSevice = require("../services/ProductSevice");
+const ProductService = require("../services/ProductService");
 
 const createProduct = async (req, res) => {
   try {
@@ -10,7 +10,7 @@ const createProduct = async (req, res) => {
         message: "The input is required",
       });
     }
-    const response = await ProductSevice.createProduct(req.body);
+    const response = await ProductService.createProduct(req.body);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -29,7 +29,7 @@ const updateProduct = async (req, res) => {
         message: "The product id is required",
       });
     }
-    const response = await ProductSevice.updateProduct(productId, data);
+    const response = await ProductService.updateProduct(productId, data);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -47,7 +47,7 @@ const deleteProduct = async (req, res) => {
         message: "The product id is required",
       });
     }
-    const response = await ProductSevice.deleteProduct(productId);
+    const response = await ProductService.deleteProduct(productId);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -58,7 +58,7 @@ const deleteProduct = async (req, res) => {
 
 const getAllProduct = async (req, res) => {
   try {
-    const response = await ProductSevice.getAllProduct();
+    const response = await ProductService.getAllProduct();
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -76,7 +76,7 @@ const getDetailsProduct = async (req, res) => {
         message: "The productId is required",
       });
     }
-    const response = await ProductSevice.getdetailsProduct(productId);
+    const response = await ProductService.getdetailsProduct(productId);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
