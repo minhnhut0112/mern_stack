@@ -26,13 +26,13 @@ const ProductdetailComponent = () => {
         className="row"
       >
         <Grid item xs={12} md={7} spacing={2} container className="row__col">
-          <Grid item xs={2} md={2} className="row__col__imgsmall">
+          <Grid item xs={3} md={2} className="row__col__imgsmall">
             <img onClick={hd} src={product1} alt="1" id="imgsmall" />
             <img onClick={hd} src={product2} alt="1" id="imgsmall" />
             <img onClick={hd} src={product3} alt="1" id="imgsmall" />
             <img onClick={hd} src={product4} alt="1" id="imgsmall" />
           </Grid>
-          <Grid item xs={10} md={10} className="row__col__imgbig">
+          <Grid item xs={9} md={10} className="row__col__imgbig">
             <img src={product1} alt="1" id="imgbig" />
           </Grid>
         </Grid>

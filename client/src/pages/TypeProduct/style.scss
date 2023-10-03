@@ -9,18 +9,23 @@
         justify-content: flex-end;
 
         select{
+            cursor: pointer;
             text-align: center;
             width: 150px;
-            height: 30px;
+            height: 50px;
             border: none;
             font-size: 20px;
-            margin-bottom: 10px;
+            padding-bottom: 20px;
 
             option{
                 background-color: white;
+        
             }
-        }
 
+            
+        }
+        
+        
     }
 
     &__listcard{

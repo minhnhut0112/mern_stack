@@ -1,129 +1,143 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
-import sigin from "../../assets/image/sign_in.jpg";
 import { Link } from "react-router-dom";
-
-const defaultTheme = createTheme();
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import InputComponent from "../../components/InputComponent/InputComponent";
+import Grid from "@mui/material/Grid";
+import login from "../../assets/image/login-logo.jpg";
 
 export default function SignUpPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const handleOnChangeEmail = (value) => {
+    setEmail(value);
+  };
+  const handleOnChangePassword = (value) => {
+    setPassword(value);
+  };
+  const handleOnChangeConfirmPassword = (value) => {
+    setConfirmPassword(value);
+  };
+  const handleOnChangePhone = (value) => {
+    setPhone(value);
+  };
+  const handleOnChangeFullname = (value) => {
+    setFullname(value);
+  };
+
+  const handleSignIn = () => {
+    console.log("signIn", email, password, confirmpassword, phone, fullname);
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
+    <div style={{ height: "1000px", backgroundColor: "#f5f5f5" }}>
+      <Grid
+        container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#f5f5f5",
+          padding: "40px 20px",
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          md={4}
+          style={{
+            backgroundColor: "white",
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Box>
-            <img
-              src={sigin}
-              alt=""
-              style={{ width: "100%", marginBottom: "10px" }}
-            />
-          </Box>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+          <img src={login} alt="ss" style={{ width: "90%", height: "90%" }} />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          style={{
+            backgroundColor: "white",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ marginTop: "60px" }}>Sign Up</h2>
+          <InputComponent
+            value={email}
+            handleOnChange={handleOnChangeEmail}
+            type="email"
+            label="Email"
+          />
+          <InputComponent
+            value={fullname}
+            handleOnChange={handleOnChangeFullname}
+            type="text"
+            label="Full Name"
+          />
+          <InputComponent
+            value={phone}
+            handleOnChange={handleOnChangePhone}
+            type="text"
+            label="Phone"
+          />
+          <InputComponent
+            value={password}
+            handleOnChange={handleOnChangePassword}
+            type="password"
+            label="PassWord"
+          />
+          <InputComponent
+            value={confirmpassword}
+            handleOnChange={handleOnChangeConfirmPassword}
+            type="password"
+            label="Confirm PassWord"
+          />
+          <Button
+            sx={{
+              width: { xs: "90%", md: "80%" },
+              height: "40px",
+              marginBottom: "20px",
+            }}
+            disabled={!email.length || !password.length}
+            onClick={handleSignIn}
+            variant="outlined"
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="fullname"
-              label="Full name"
-              type="text"
-              id="fullname"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="phonenumber"
-              label="Phone Number"
-              type="text"
-              id="phonenumber"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="text"
-              id="password"
-            />
+            <Link>Sign Up</Link>
+          </Button>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: "30px",
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              md={4}
+              sx={{
+                textAlign: "start",
+                marginLeft: { xs: "30px", md: "40px" },
+                marginBottom: { xs: "20px" },
               }}
             >
-              <Button
-                style={{
-                  backgroundColor: "white",
-                  width: "180px",
-                  color: "black",
-                }}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                <Link to="/" style={{ color: "black" }}>
-                  Sign Up
-                </Link>
-              </Button>
-            </div>
-            <Grid container>
-              <Grid item xs>
-                <Link to="/forgotpass" style={{ color: "black" }}></Link>
-              </Grid>
-              <Grid item>
-                <Link to="/sign-in" style={{ color: "black" }}>
-                  Do have an account? Sign In
-                </Link>
-              </Grid>
+              {/* <Link>Forgot password?</Link> */}
             </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+            <Grid
+              item
+              xs={12}
+              md={12}
+              sx={{
+                textAlign: "end",
+                marginRight: { xs: "30px", md: "50px" },
+                marginBottom: { xs: "20px" },
+              }}
+            >
+              <Link to="/sign-in">Have a account? Sign In</Link>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
   );
 }

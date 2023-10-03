@@ -8,7 +8,7 @@ const TypeProduct = () => {
   return (
     <div className="category">
       <h1 className="category__title">Jordan</h1>
-      <div className="category__filters">
+      <div className="category__filters" style={{ cursor: "pointer" }}>
         <select defaultValue={0}>
           <option style={{ display: "none" }}>Filter</option>
           <option>Volvo</option>

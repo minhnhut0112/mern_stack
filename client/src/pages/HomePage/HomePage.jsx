@@ -1,8 +1,8 @@
 import React from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
-import slider1 from "../../assets/image/slider1.jpg";
-import slider2 from "../../assets/image/slider2.jpg";
-import slider3 from "../../assets/image/slider3.jpg";
+import slider1 from "../../assets/image/sl1.jpg";
+import slider2 from "../../assets/image/sl2.jpg";
+import slider3 from "../../assets/image/sl3.jpg";
 import "./styles.scss";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import Grid from "@mui/material/Grid";
