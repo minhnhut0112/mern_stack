@@ -3,23 +3,36 @@ const JwtService = require("../services/JwtService");
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, comfirmPassword, phone } = req.body;
-    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    const isCheckEmail = reg.test(email);
-    if (!name || !email || !password || !comfirmPassword || !phone) {
+    const { email, name, phone, password, confirmPassword } = req.body;
+    const regEmail =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const regPhone = /^[0-9]+$/;
+    const isCheckEmail = regEmail.test(email);
+    const isCheckPhone = regPhone.test(phone);
+    if (!name || !email || !password || !confirmPassword || !phone) {
       return res.status(200).json({
         status: "Err",
         message: "The input is required",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
-        status: "True",
+        status: "Err",
         message: "The input is email",
       });
-    } else if (password !== comfirmPassword) {
+    } else if (password !== confirmPassword) {
       return res.status(200).json({
         status: "Err",
         message: "The password is equal confirmPassword",
+      });
+    } else if (!isCheckPhone) {
+      return res.status(200).json({
+        status: "Err",
+        message: "The phone is number",
+      });
+    } else if (phone.length != Number(10)) {
+      return res.status(200).json({
+        status: "Err",
+        message: "The phone is 10 number",
       });
     }
 
@@ -35,7 +48,8 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const reg =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     const isCheckEmail = reg.test(email);
     if (!email || !password) {
       return res.status(200).json({
@@ -44,18 +58,20 @@ const loginUser = async (req, res) => {
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
-        status: "True",
+        status: "Err",
         message: "The input is email",
       });
-      // } else if (password !== comfirmPassword) {
-      //   return res.status(200).json({
-      //     status: "Err",
-      //     message: "The password is equal confirmPassword",
-      //   });
     }
 
     const response = await UserService.loginUser(req.body);
-    return res.status(200).json(response);
+    const { refresh_token, ...newResponse } = response;
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      secure: false,
+      // sameSite: "strict",
+      // path: "/",
+    });
+    return res.status(200).json(newResponse);
   } catch (e) {
     return res.status(404).json({
       message: e,
@@ -131,7 +147,7 @@ const getdetailsUser = async (req, res) => {
 
 const refreshToken = async (req, res) => {
   try {
-    const token = req.headers.token.split(" ")[1];
+    const token = req.cookie.refresh_token;
     if (!token) {
       return res.status(200).json({
         status: "Err",

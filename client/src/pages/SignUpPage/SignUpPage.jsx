@@ -1,16 +1,23 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import Grid from "@mui/material/Grid";
 import login from "../../assets/image/login-logo.jpg";
+import * as UserService from "../../service/UserService";
+import { useMutationHook } from "../../hooks/useMutationHook";
+import Loading from "../../components/Loading/Loading";
+import * as message from "../../components/MessageComponent/MessageComponent";
+import { useEffect } from "react";
 
-export default function SignUpPage() {
+const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
-  const [fullname, setFullname] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setFullname] = useState("");
   const [phone, setPhone] = useState("");
 
   const handleOnChangeEmail = (value) => {
@@ -29,8 +36,27 @@ export default function SignUpPage() {
     setFullname(value);
   };
 
-  const handleSignIn = () => {
-    console.log("signIn", email, password, confirmpassword, phone, fullname);
+  const mutation = useMutationHook((data) => UserService.signUpUser(data));
+  const { data, isLoading, isSuccess, isError } = mutation;
+
+  useEffect(() => {
+    if (isSuccess) {
+      message.success();
+      navigate("/sign-in");
+    } else if (isError) {
+      message.error();
+    }
+  }, [isSuccess, isError, navigate]);
+
+  const handleSignUp = () => {
+    mutation.mutate({
+      email,
+      name,
+      phone,
+      password,
+      confirmPassword,
+    });
+    console.log("mutaton", mutation);
   };
 
   return (
@@ -67,48 +93,62 @@ export default function SignUpPage() {
           }}
         >
           <h2 style={{ marginTop: "60px" }}>Sign Up</h2>
+          {data?.status === "True" && (
+            <span style={{ color: "red" }}>{data?.message}</span>
+          )}
           <InputComponent
             value={email}
             handleOnChange={handleOnChangeEmail}
             type="email"
             label="Email"
           />
+          {data?.status === "Err" && (
+            <span style={{ color: "red" }}>{data?.message}</span>
+          )}
           <InputComponent
-            value={fullname}
+            value={name.trim()}
             handleOnChange={handleOnChangeFullname}
             type="text"
             label="Full Name"
           />
           <InputComponent
-            value={phone}
+            value={phone.trim()}
             handleOnChange={handleOnChangePhone}
             type="text"
             label="Phone"
           />
           <InputComponent
-            value={password}
+            value={password.trim()}
             handleOnChange={handleOnChangePassword}
             type="password"
             label="PassWord"
           />
           <InputComponent
-            value={confirmpassword}
+            value={confirmPassword.trim()}
             handleOnChange={handleOnChangeConfirmPassword}
             type="password"
             label="Confirm PassWord"
           />
-          <Button
-            sx={{
-              width: { xs: "90%", md: "80%" },
-              height: "40px",
-              marginBottom: "20px",
-            }}
-            disabled={!email.length || !password.length}
-            onClick={handleSignIn}
-            variant="outlined"
-          >
-            <Link>Sign Up</Link>
-          </Button>
+          <Loading isLoading={isLoading}>
+            <Button
+              sx={{
+                width: { xs: "90%", md: "80%" },
+                height: "40px",
+                marginBottom: "20px",
+              }}
+              disabled={
+                !email.length ||
+                !password.length ||
+                !name ||
+                !confirmPassword ||
+                !phone
+              }
+              onClick={handleSignUp}
+              variant="outlined"
+            >
+              Sign In
+            </Button>
+          </Loading>
 
           <Grid container>
             <Grid
@@ -140,4 +180,6 @@ export default function SignUpPage() {
       </Grid>
     </div>
   );
-}
+};
+
+export default SignUpPage;

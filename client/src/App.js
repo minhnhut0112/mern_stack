@@ -1,21 +1,22 @@
-import axios from "axios";
 import React, { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
-import { useQuery } from "react-query";
 
 function App() {
   // useEffect(() => {
   //   fetch();
   // }, []);
-  const fetch = async () => {
-    const res = await axios.get(`http://localhost:3001/api/product/getAll`);
-    return res.data;
-  };
 
-  const query = useQuery("todos", fetch);
-  console.log("query", query);
+  // const fetchApi = async () => {
+  //   const res = await axios.get(
+  //     `${process.env.REACT_APP_API_URL}/product/getAll`
+  //   );
+  //   return res.data;
+  // };
+
+  // const query = useQuery("todos", fetchApi);
+  // console.log("query", query);
 
   return (
     <div>

@@ -11,8 +11,7 @@ const authorityMiddleware = (req, res, next) => {
         message: "The authentication is not success",
       });
     }
-    const { payload } = user;
-    if (payload?.isAdmin) {
+    if (user?.isAdmin) {
       next();
     } else {
       return res.status(404).json({
@@ -33,8 +32,7 @@ const authorityUserMiddleware = (req, res, next) => {
         message: "The authentication is not success",
       });
     }
-    const { payload } = user;
-    if (payload?.isAdmin || payload?._id === userId) {
+    if (user?.isAdmin || user?._id === userId) {
       next();
     } else {
       return res.status(404).json({
