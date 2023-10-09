@@ -54,7 +54,6 @@ const SignUpPage = () => {
       password,
       confirmPassword,
     });
-    console.log("mutaton", mutation);
   };
 
   return (

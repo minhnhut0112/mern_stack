@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const { use } = require("../routes/UserRouter");
 dotenv.config();
 
 const genneralAccessToken = async (payload) => {
@@ -32,7 +31,6 @@ const refreshToken = (token) => {
     try {
       jwt.verify(token, process.env.REFRESH_TOKEN, async function (err, user) {
         if (err) {
-          console.log("err", err);
           resolve({
             status: "Err",
             message: "The authentication user is not success",
