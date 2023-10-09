@@ -1,16 +1,16 @@
 import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import * as UserService from "../../service/UserService";
+import * as message from "../../components/MessageComponent/MessageComponent";
 import Button from "@mui/material/Button";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import Grid from "@mui/material/Grid";
 import login from "../../assets/image/login-logo.jpg";
-import * as UserService from "../../service/UserService";
-import { useMutationHook } from "../../hooks/useMutationHook";
 import Loading from "../../components/Loading/Loading";
-import * as message from "../../components/MessageComponent/MessageComponent";
-import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useMutationHook } from "../../hooks/useMutationHook";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/slices/userSlice";
 
@@ -29,28 +29,27 @@ export default function SignInPage() {
   };
 
   const mutation = useMutationHook((data) => UserService.loginUser(data));
-  const { data, isLoading, isSuccess } = mutation;
+  const { data, isLoading } = mutation;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (data?.status === "OK") {
       message.success();
-      // navigate("/");
-      localStorage.setItem("access_token", data?.access_token);
+      navigate("/");
+      localStorage.setItem("access_token", JSON.stringify(data?.access_token));
       if (data?.access_token) {
         const decoded = jwt_decode(data?.access_token);
-        // console.log("decode", decoded);
         if (decoded?.id) {
           handleGetDetailsUser(decoded?.id, data?.access_token);
         }
       }
     }
-  }, [isSuccess, navigate]);
+  });
 
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDetailsUser(id, token);
-    disPatch(updateUser({ ...res.data, access_token: token }));
+    disPatch(updateUser({ ...res?.data, access_token: token }));
   };
 
   const handleSignIn = () => {
@@ -94,15 +93,16 @@ export default function SignInPage() {
           }}
         >
           <h2 style={{ marginTop: "60px" }}>Sign In</h2>
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {data?.status === "Err" && <span>{data?.message}</span>}
+          </div>
           <InputComponent
             value={email}
             handleOnChange={handleOnChangeEmail}
             type="email"
             label="Email"
           />
-          {data?.status === "Err" && (
-            <span style={{ color: "red" }}>{data?.message}</span>
-          )}
+
           <InputComponent
             value={password}
             handleOnChange={handleOnChangePassword}
@@ -123,6 +123,7 @@ export default function SignInPage() {
               Sign In
             </Button>
           </Loading>
+
           <Grid container>
             <Grid
               item

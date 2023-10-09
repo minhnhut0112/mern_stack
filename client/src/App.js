@@ -1,22 +1,52 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
+import { isJsonString } from "./utils";
+import { useDispatch } from "react-redux";
+import jwt_decode from "jwt-decode";
+import * as UserService from "./service/UserService";
+import { updateUser } from "./redux/slices/userSlice";
 
 function App() {
-  // useEffect(() => {
-  //   fetch();
-  // }, []);
+  const disPatch = useDispatch();
 
-  // const fetchApi = async () => {
-  //   const res = await axios.get(
-  //     `${process.env.REACT_APP_API_URL}/product/getAll`
-  //   );
-  //   return res.data;
-  // };
+  useEffect(() => {
+    const { storageData, decode } = handleDecode();
+    if (decode?.id) {
+      handleGetDetailsUser(decode.id, storageData);
+    }
+  });
 
-  // const query = useQuery("todos", fetchApi);
-  // console.log("query", query);
+  const handleDecode = () => {
+    let storageData = localStorage.getItem("access_token");
+    let decode = {};
+    if (storageData && isJsonString(storageData)) {
+      storageData = JSON.parse(storageData);
+      decode = jwt_decode(storageData);
+    }
+    return { decode, storageData };
+  };
+
+  UserService.axiosJWT.interceptors.request.use(
+    async (config) => {
+      const currenrTime = new Date();
+      const { decode } = handleDecode();
+      if (decode?.exp < currenrTime.getTime() / 1000) {
+        const data = await UserService.refreshToken();
+        config.headers["token"] = `Bearer ${data?.access_token}`;
+      }
+      return config;
+    },
+    (err) => {
+      return Promise.reject(err);
+    }
+  );
+
+  const handleGetDetailsUser = async (id, token) => {
+    const res = await UserService.getDetailsUser(id, token);
+    disPatch(updateUser({ ...res?.data, access_token: token }));
+  };
 
   return (
     <div>
