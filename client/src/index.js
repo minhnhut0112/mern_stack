@@ -6,7 +6,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import "./index.css";
 import { QueryClientProvider, QueryClient } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();
@@ -17,7 +17,7 @@ root.render(
     <Provider store={store}>
       <App />
     </Provider>
-    <ReactQueryDevtools initialIsOpen={false} />
+    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
   </QueryClientProvider>
 
   // </React.StrictMode>

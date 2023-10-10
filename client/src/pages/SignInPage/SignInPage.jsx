@@ -1,11 +1,8 @@
 import * as React from "react";
 import * as UserService from "../../service/UserService";
-import * as message from "../../components/MessageComponent/MessageComponent";
-import Button from "@mui/material/Button";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import Grid from "@mui/material/Grid";
 import login from "../../assets/image/login-logo.jpg";
-import Loading from "../../components/Loading/Loading";
 import jwt_decode from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -13,10 +10,11 @@ import { useMutationHook } from "../../hooks/useMutationHook";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/slices/userSlice";
+import { Button, CircularProgress } from "@mui/material";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const disPatch = useDispatch();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,8 +33,8 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (data?.status === "OK") {
-      message.success();
       navigate("/");
+      toast.success("minhdgasgd");
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
       if (data?.access_token) {
         const decoded = jwt_decode(data?.access_token);
@@ -45,7 +43,7 @@ export default function SignInPage() {
         }
       }
     }
-  });
+  }, [data]);
 
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDetailsUser(id, token);
@@ -102,27 +100,28 @@ export default function SignInPage() {
             type="email"
             label="Email"
           />
-
           <InputComponent
             value={password}
             handleOnChange={handleOnChangePassword}
             type="password"
             label="PassWord"
           />
-          <Loading isLoading={isLoading}>
-            <Button
-              sx={{
-                width: { xs: "90%", md: "80%" },
-                height: "40px",
-                marginBottom: "20px",
-              }}
-              disabled={!email.length || !password.length}
-              onClick={handleSignIn}
-              variant="outlined"
-            >
-              Sign In
-            </Button>
-          </Loading>
+          <Button
+            variant="outlined"
+            sx={{
+              width: { xs: "90%", md: "80%" },
+              height: "40px",
+              marginBottom: "20px",
+            }}
+            disabled={!email.length || !password.length || isLoading === true}
+            onClick={handleSignIn}
+          >
+            {isLoading ? (
+              <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
+            ) : (
+              <div>Sign In</div>
+            )}
+          </Button>
 
           <Grid container>
             <Grid

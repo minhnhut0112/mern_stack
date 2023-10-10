@@ -6,11 +6,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
-import React from "react";
-// import avatar from "../../../assets/image/avata.jpg";
+import * as React from "react";
 import { Link } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
-import { useSelector } from "react-redux";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch, useSelector } from "react-redux";
+import * as UserService from "../../../service/UserService";
+import { resetUser } from "../../../redux/slices/userSlice";
 
 const UserComponent = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,6 +27,13 @@ const UserComponent = () => {
   const user = useSelector((state) => state.user);
   const nameAvate = user.name.toUpperCase();
 
+  const disPatch = useDispatch();
+
+  const handleLogout = async () => {
+    await UserService.logoutUser();
+    disPatch(resetUser());
+    localStorage.removeItem("access_token");
+  };
   return (
     <div>
       {user?.name ? (
@@ -55,25 +64,25 @@ const UserComponent = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>
-              <Link style={{ color: "black" }} to="/myprofile">
-                My Profile
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link style={{ color: "black" }} to="/myorder">
-                My Order
-              </Link>
-            </MenuItem>
+            <Link style={{ color: "black" }} to="/myprofile">
+              <MenuItem onClick={handleClose}>My Profile</MenuItem>
+            </Link>
+
+            <Link style={{ color: "black" }} to="/myorder">
+              <MenuItem onClick={handleClose}>My Order</MenuItem>
+            </Link>
+
             <Divider />
-            <MenuItem onClick={handleClose}>
-              <Link style={{ color: "black" }} to="/sign-in">
-                <ListItemIcon>
-                  <LoginIcon fontSize="small" />
-                </ListItemIcon>
-                Log in
-              </Link>
-            </MenuItem>
+            <Link style={{ color: "black" }} to="/sign-in">
+              <MenuItem onClick={handleClose}>
+                <div onClick={handleLogout}>
+                  <ListItemIcon>
+                    <LogoutIcon fontSize="small" />
+                  </ListItemIcon>
+                  Log out
+                </div>
+              </MenuItem>
+            </Link>
           </Menu>
         </div>
       ) : (
@@ -102,25 +111,14 @@ const UserComponent = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>
-              <Link style={{ color: "black" }} to="/myprofile">
-                My Profile
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link style={{ color: "black" }} to="/myorder">
-                My Order
-              </Link>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>
-              <Link style={{ color: "black" }} to="/sign-in">
+            <Link style={{ color: "black" }} to="/sign-in">
+              <MenuItem onClick={handleClose}>
                 <ListItemIcon>
                   <LoginIcon fontSize="small" />
                 </ListItemIcon>
                 Log in
-              </Link>
-            </MenuItem>
+              </MenuItem>
+            </Link>
           </Menu>
         </div>
       )}

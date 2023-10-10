@@ -1,15 +1,15 @@
-import { message } from "antd";
+import { Alert } from "@mui/material";
 
 const success = (mes = "Success") => {
-  message.success(mes);
+  return <Alert severity="success">{mes}</Alert>;
 };
 
 const error = (mes = "Error") => {
-  message.error(mes);
+  return <Alert severity="error">{mes}</Alert>;
 };
 
 const warning = (mes = "Warning") => {
-  message.warning(mes);
+  return <Alert severity="warning">{mes}</Alert>;
 };
 
 export { success, error, warning };

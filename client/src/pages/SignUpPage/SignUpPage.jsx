@@ -7,9 +7,8 @@ import Grid from "@mui/material/Grid";
 import login from "../../assets/image/login-logo.jpg";
 import * as UserService from "../../service/UserService";
 import { useMutationHook } from "../../hooks/useMutationHook";
-import Loading from "../../components/Loading/Loading";
-import * as message from "../../components/MessageComponent/MessageComponent";
 import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -41,7 +40,6 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (data?.status === "OK") {
-      message.success();
       navigate("/sign-in");
     }
   });
@@ -126,26 +124,29 @@ const SignUpPage = () => {
             type="password"
             label="Confirm PassWord"
           />
-          <Loading isLoading={isLoading}>
-            <Button
-              sx={{
-                width: { xs: "90%", md: "80%" },
-                height: "40px",
-                marginBottom: "20px",
-              }}
-              disabled={
-                !email.length ||
-                !password.length ||
-                !name ||
-                !confirmPassword ||
-                !phone
-              }
-              onClick={handleSignUp}
-              variant="outlined"
-            >
-              Sign In
-            </Button>
-          </Loading>
+          <Button
+            variant="outlined"
+            sx={{
+              width: { xs: "90%", md: "80%" },
+              height: "40px",
+              marginBottom: "20px",
+            }}
+            disabled={
+              !email.length ||
+              !password.length ||
+              !name ||
+              !confirmPassword ||
+              !phone ||
+              isLoading === true
+            }
+            onClick={handleSignUp}
+          >
+            {isLoading ? (
+              <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
+            ) : (
+              <div>Sign Up</div>
+            )}
+          </Button>
 
           <Grid container>
             <Grid
