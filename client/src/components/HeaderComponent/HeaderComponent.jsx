@@ -138,9 +138,11 @@ function HeaderComponent() {
             }}
           >
             <SearchComponent />
-            <Badge badgeContent={4} color="error">
-              <ShoppingCartOutlinedIcon />
-            </Badge>
+            <Link to="cart" style={{ color: "black" }}>
+              <Badge badgeContent={4} color="error">
+                <ShoppingCartOutlinedIcon />
+              </Badge>
+            </Link>
             <UserComponent />
           </div>
         </Toolbar>
