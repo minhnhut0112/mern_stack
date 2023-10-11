@@ -24,7 +24,9 @@ export default function BasicModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button style={{ color: "black" }} onClick={handleOpen}>
+        Size Guide
+      </Button>
 
       <Grid container spacing={3}>
         <Grid item>
