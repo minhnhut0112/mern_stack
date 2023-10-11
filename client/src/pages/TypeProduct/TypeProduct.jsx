@@ -24,7 +24,7 @@ const TypeProduct = () => {
         </Grid>
       </Grid>
       <div className="category__pagination">
-        <Pagination count={5} variant="outlined" color="primary" />
+        <Pagination count={5} variant="outlined" />
       </div>
     </div>
   );
