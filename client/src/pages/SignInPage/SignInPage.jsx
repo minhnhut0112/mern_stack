@@ -11,7 +11,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/slices/userSlice";
 import { Button, CircularProgress } from "@mui/material";
-import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const disPatch = useDispatch();
@@ -34,7 +33,6 @@ export default function SignInPage() {
   useEffect(() => {
     if (data?.status === "OK") {
       navigate("/");
-      toast.success("minhdgasgd");
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
       if (data?.access_token) {
         const decoded = jwt_decode(data?.access_token);
@@ -95,6 +93,7 @@ export default function SignInPage() {
             {data?.status === "Err" && <span>{data?.message}</span>}
           </div>
           <InputComponent
+            style={{ width: "50%" }}
             value={email}
             handleOnChange={handleOnChangeEmail}
             type="email"
