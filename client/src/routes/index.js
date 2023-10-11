@@ -2,6 +2,7 @@ import HomePage from "../pages/HomePage/HomePage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import TypeProduct from "../pages/TypeProduct/TypeProduct";
@@ -42,7 +43,11 @@ export const routes = [
     page: OrderPage,
     showHeaderAndFooter: true,
   },
-
+  {
+    path: "/myprofile",
+    page: ProfilePage,
+    showHeaderAndFooter: true,
+  },
   {
     path: "*",
     page: NotFoundPage,
