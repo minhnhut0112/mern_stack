@@ -8,7 +8,10 @@ const InputComponent = (props) => {
   return (
     <div>
       <TextField
-        sx={{ width: { xs: "90%", md: "80%", marginBottom: "20px" } }}
+        sx={{
+          width: { xs: "90%", md: "80%", marginBottom: "20px" },
+        }}
+        color="grey"
         value={props.value}
         onChange={onChangeInput}
         type={props.type}
