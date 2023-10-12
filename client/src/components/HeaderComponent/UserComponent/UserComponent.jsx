@@ -13,9 +13,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "../../../service/UserService";
 import { resetUser } from "../../../redux/slices/userSlice";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const UserComponent = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,8 +26,9 @@ const UserComponent = () => {
     setAnchorEl(null);
   };
 
+  const [userName, setUserName] = useState("");
+
   const user = useSelector((state) => state.user);
-  const nameAvate = user.name.toUpperCase();
 
   const disPatch = useDispatch();
 
@@ -34,9 +37,14 @@ const UserComponent = () => {
     disPatch(resetUser());
     localStorage.removeItem("access_token");
   };
+
+  useEffect(() => {
+    setUserName(user?.name);
+  }, [user?.name]);
+
   return (
     <div>
-      {user?.name ? (
+      {user?.access_token ? (
         <div>
           <Box
             sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
@@ -50,7 +58,7 @@ const UserComponent = () => {
                 aria-expanded={open ? "true" : undefined}
               >
                 <Avatar sx={{ width: 32, height: 32 }}>
-                  {nameAvate.split("", 1)}
+                  {userName.split("", 1)}
                 </Avatar>
               </IconButton>
             </Tooltip>
