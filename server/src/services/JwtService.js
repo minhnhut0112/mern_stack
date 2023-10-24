@@ -40,7 +40,6 @@ const refreshToken = (token) => {
           id: user?.id,
           isAdmin: user?.isAdmin,
         });
-        console.log("access_token", access_token);
         resolve({
           status: "Ok",
           message: "success",

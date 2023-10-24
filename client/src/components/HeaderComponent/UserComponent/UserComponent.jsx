@@ -15,6 +15,7 @@ import * as UserService from "../../../service/UserService";
 import { resetUser } from "../../../redux/slices/userSlice";
 import { useState } from "react";
 import { useEffect } from "react";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 const UserComponent = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,19 +50,15 @@ const UserComponent = () => {
           <Box
             sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
           >
-            <Tooltip title="Account settings">
-              <IconButton
-                onClick={handleClick}
-                size="small"
-                aria-controls={open ? "account-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-              >
-                <Avatar sx={{ width: 32, height: 32 }}>
-                  {userName.split("", 1)}
-                </Avatar>
-              </IconButton>
-            </Tooltip>
+            <div
+              onClick={handleClick}
+              size="small"
+              aria-controls={open ? "account-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              {userName} <PersonOutlineIcon />
+            </div>
           </Box>
           <Menu
             anchorEl={anchorEl}
@@ -95,39 +92,18 @@ const UserComponent = () => {
         </div>
       ) : (
         <div>
-          <Box
-            sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
+          <Link
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "black",
+              fontSize: "20px",
+            }}
+            to="/sign-in"
           >
-            <Tooltip title="Account settings">
-              <IconButton
-                onClick={handleClick}
-                size="small"
-                aria-controls={open ? "account-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-              >
-                <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <Menu
-            anchorEl={anchorEl}
-            id="account-menu"
-            open={open}
-            onClose={handleClose}
-            onClick={handleClose}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          >
-            <Link style={{ color: "black" }} to="/sign-in">
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <LoginIcon fontSize="small" />
-                </ListItemIcon>
-                Log in
-              </MenuItem>
-            </Link>
-          </Menu>
+            Log in <PersonOutlineIcon />
+          </Link>
         </div>
       )}
     </div>

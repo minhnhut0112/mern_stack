@@ -14,6 +14,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../assets/image/jordan-logo.png";
+import logomini2 from "../../assets/image/conver-logo.png";
+import logobig from "../../assets/image/logo-nike.png";
 
 const pages = ["New & Feature", "Jordan", "Runing", "Football"];
 
@@ -37,6 +40,24 @@ function HeaderComponent() {
       }}
       position="static"
     >
+      <div
+        style={{
+          backgroundColor: "#f5f5f5",
+          height: "30px",
+          padding: "0px 36px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <img width={40} src={logo} alt="logo" />
+          <img width={40} src={logomini2} alt="logo" />
+        </div>
+        <div style={{ cursor: "pointer" }}>
+          <UserComponent />
+        </div>
+      </div>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -54,7 +75,7 @@ function HeaderComponent() {
               textDecoration: "none",
             }}
           >
-            SPACE
+            <img width={80} src={logobig} alt="logo" />
           </Typography>
           <Box
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
@@ -114,7 +135,7 @@ function HeaderComponent() {
               textDecoration: "none",
             }}
           >
-            S
+            <img width={80} src={logobig} alt="logo" />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -143,7 +164,6 @@ function HeaderComponent() {
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </Link>
-            <UserComponent />
           </div>
         </Toolbar>
       </Container>

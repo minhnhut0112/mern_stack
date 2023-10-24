@@ -39,10 +39,12 @@ const SignUpPage = () => {
   const { data, isLoading } = mutation;
 
   useEffect(() => {
-    if (data?.status === "OK") {
+    if (data?.status === "True") {
       navigate("/sign-in");
     }
-  });
+  }, [data]);
+
+  console.log(mutation);
 
   const handleSignUp = () => {
     mutation.mutate({
@@ -87,8 +89,10 @@ const SignUpPage = () => {
             textAlign: "center",
           }}
         >
-          <h2 style={{ marginTop: "60px" }}>Sign Up</h2>
-          {data?.status === "True" && (
+          <div>
+            <h2 style={{ marginTop: "60px" }}>Sign Up</h2>
+          </div>
+          {data?.status === "Err" && (
             <span style={{ color: "red" }}>{data?.message}</span>
           )}
           <InputComponent
@@ -97,9 +101,7 @@ const SignUpPage = () => {
             type="email"
             label="Email"
           />
-          {data?.status === "Err" && (
-            <span style={{ color: "red" }}>{data?.message}</span>
-          )}
+
           <InputComponent
             value={name.trim()}
             handleOnChange={handleOnChangeFullname}

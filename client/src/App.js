@@ -16,7 +16,7 @@ function App() {
     if (decode?.id) {
       handleGetDetailsUser(decode.id, storageData);
     }
-  });
+  }, []);
 
   const handleDecode = () => {
     let storageData = localStorage.getItem("access_token");
