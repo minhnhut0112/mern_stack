@@ -137,21 +137,21 @@ export default function ProfilePage() {
           <h5 style={{ margin: "10px 0px" }}>Name</h5>
           <InputComponent
             value={name}
-            onChange={handleOnChangeName}
+            handleOnChange={handleOnChangeName}
             type="text"
             variant="standard"
           />
           <h5 style={{ margin: "10px 0px" }}>Email</h5>
           <InputComponent
             value={email}
-            onChange={handleOnChangeEmail}
+            handleOnChange={handleOnChangeEmail}
             type="email"
             variant="standard"
           />
           <h5 style={{ margin: "10px 0px" }}>Phone</h5>
           <InputComponent
             value={phone}
-            onChange={handleOnChangePhone}
+            handleOnChange={handleOnChangePhone}
             variant="standard"
             type="text"
           />
