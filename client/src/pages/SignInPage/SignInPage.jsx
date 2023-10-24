@@ -4,7 +4,7 @@ import InputComponent from "../../components/InputComponent/InputComponent";
 import Grid from "@mui/material/Grid";
 import login from "../../assets/image/login-logo.jpg";
 import jwt_decode from "jwt-decode";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutationHook } from "../../hooks/useMutationHook";
 import { useEffect } from "react";
@@ -14,6 +14,8 @@ import { Button, CircularProgress } from "@mui/material";
 
 export default function SignInPage() {
   const disPatch = useDispatch();
+  const location = useLocation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,14 +28,22 @@ export default function SignInPage() {
   };
 
   const mutation = useMutationHook((data) => UserService.loginUser(data));
-  const { data, isLoading } = mutation;
+  const { data, isLoading, isSuccess } = mutation;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data?.status === "OK") {
-      navigate("/");
+    if (isSuccess) {
+      if (location.state) {
+        navigate(location.state);
+      } else {
+        navigate("/");
+      }
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
+      localStorage.setItem(
+        "refresh_token",
+        JSON.stringify(data?.refresh_token)
+      );
       if (data?.access_token) {
         const decoded = jwt_decode(data?.access_token);
         if (decoded?.id) {
@@ -41,11 +51,13 @@ export default function SignInPage() {
         }
       }
     }
-  }, [data]);
+  }, [isSuccess]);
 
   const handleGetDetailsUser = async (id, token) => {
+    const storage = localStorage.getItem("refresh_token");
+    const refreshToken = JSON.parse(storage);
     const res = await UserService.getDetailsUser(id, token);
-    disPatch(updateUser({ ...res?.data, access_token: token }));
+    disPatch(updateUser({ ...res?.data, access_token: token, refreshToken }));
   };
 
   const handleSignIn = () => {

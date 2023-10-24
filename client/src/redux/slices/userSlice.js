@@ -9,6 +9,8 @@ const initialState = {
   id: "",
   password: "",
   access_token: "",
+  isAdmin: false,
+  refreshToken: "",
 };
 
 export const userSlice = createSlice({
@@ -25,6 +27,8 @@ export const userSlice = createSlice({
         avatar = "",
         _id = "",
         access_token = "",
+        isAdmin,
+        refreshToken = "",
       } = action.payload;
 
       state.name = name ? name : state.name;
@@ -35,6 +39,8 @@ export const userSlice = createSlice({
       state.id = _id ? _id : state.id;
       state.password = password;
       state.access_token = access_token ? access_token : state.access_token;
+      state.isAdmin = isAdmin ? isAdmin : state.isAdmin;
+      state.refreshToken = refreshToken ? refreshToken : state.refreshToken;
     },
     resetUser: (state) => {
       state.name = "";
@@ -45,6 +51,8 @@ export const userSlice = createSlice({
       state.id = "";
       state.password = "";
       state.access_token = "";
+      state.isAdmin = false;
+      state.refreshToken = "";
     },
   },
 });
