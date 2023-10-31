@@ -15,6 +15,10 @@ import {
   Avatar,
   Box,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   Snackbar,
   TextField,
@@ -29,10 +33,16 @@ const AdminProduct = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
   const [idProduct, setIdProduct] = useState("");
+  const [openComfirm, setOpenComfirm] = useState(false);
+  const [idProductDelete, setIdProductDelete] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setOpenDetail(false);
+    setOpenComfirm(false);
+    setIdProductDelete("");
+    setIdProduct("");
     setStateProduct(inittial());
   };
 
@@ -111,22 +121,30 @@ const AdminProduct = () => {
     });
   };
 
-  const handleAddProduct = () => {
-    mutation.mutate({
-      ...stateProduct,
-    });
-  };
-
-  //listproduct
   const getAllProduct = async () => {
     const res = await ProductService.getAllProduct();
+    console.log("res", res);
+
     return res;
   };
 
-  const { isLoading: loadingProduct, data: products } = useQuery(
-    ["products"],
-    getAllProduct
-  );
+  const fetchProduct = useQuery(["products"], getAllProduct);
+  const { isLoading: loadingProduct, data: products } = fetchProduct;
+
+  const handleAddProduct = () => {
+    mutation.mutate(
+      {
+        ...stateProduct,
+      },
+      {
+        onSettled: () => {
+          fetchProduct.refetch();
+        },
+      }
+    );
+  };
+
+  //listproduct
 
   const handleEditProduct = async (idProduct) => {
     const res = await ProductService.getDetailProduct(idProduct);
@@ -160,14 +178,19 @@ const AdminProduct = () => {
   const user = useSelector((state) => state.user);
 
   const handleUpdateProduct = () => {
-    mutationUpdate.mutate({
-      id: idProduct,
-      token: user?.access_token,
-      ...stateProduct,
-    });
+    mutationUpdate.mutate(
+      {
+        id: idProduct,
+        token: user?.access_token,
+        ...stateProduct,
+      },
+      {
+        onSettled: () => {
+          fetchProduct.refetch();
+        },
+      }
+    );
   };
-
-  console.log(isSuccessUpdated, dataUpdated);
 
   useEffect(() => {
     if (isSuccessUpdated && dataUpdated?.status === "OK") {
@@ -201,6 +224,7 @@ const AdminProduct = () => {
             style={{ cursor: "pointer", marginRight: 10, color: "blue" }}
           />
           <DeleteOutlineOutlinedIcon
+            onClick={() => setIdProductDelete(params.row._id)}
             style={{ cursor: "pointer", color: "red" }}
           />
         </>
@@ -220,13 +244,57 @@ const AdminProduct = () => {
       };
     });
 
+  //delted
+
+  useEffect(() => {
+    if (idProductDelete) {
+      setOpenComfirm(true);
+    }
+  }, [idProductDelete]);
+
+  const mutationDeleted = useMutationHook((data) => {
+    const { id, token } = data;
+    const res = ProductService.deleteProduct(id, token);
+    return res;
+  });
+
+  const {
+    isLoading: isLoadingDeleted,
+    isSuccess: isSuccessDeteted,
+    data: dataDeleted,
+  } = mutationDeleted;
+
+  const [openMessDeleted, setOpenMessDeleted] = useState(false);
+
+  useEffect(() => {
+    if (isSuccessDeteted && dataDeleted?.status === "Ok") {
+      handleClose();
+      setOpenMessDeleted(true);
+    } else if (data?.status === "Err") {
+    }
+  }, [isSuccessDeteted, dataDeleted]);
+
+  const handleDeleteProduct = () => {
+    mutationDeleted.mutate(
+      {
+        id: idProductDelete,
+        token: user?.access_token,
+      },
+      {
+        onSettled: () => {
+          fetchProduct.refetch();
+        },
+      }
+    );
+  };
+
   return (
     <div>
       {openMess && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={true}
-          autoHideDuration={6000}
+          autoHideDuration={2000}
           onClose={handleCloseMess}
         >
           <Alert
@@ -524,7 +592,7 @@ const AdminProduct = () => {
                           }}
                           onClick={handleUpdateProduct}
                         >
-                          {isLoading ? (
+                          {isLoadingUpated ? (
                             <CircularProgress
                               sx={{ marginLeft: "20px" }}
                               size="25px"
@@ -541,6 +609,22 @@ const AdminProduct = () => {
             </>
           )}
         </Modal>
+        <Dialog open={openComfirm} onClose={handleClose}>
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogContent>
+            Are you sure you want to remove this product
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Disagree</Button>
+            <Button color="error" onClick={handleDeleteProduct} autoFocus>
+              {isLoadingDeleted ? (
+                <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
+              ) : (
+                <>AGREE</>
+              )}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
       <div style={{ marginTop: "20px" }}>
         <TableComponent

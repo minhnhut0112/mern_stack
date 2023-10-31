@@ -60,7 +60,7 @@ const getAllProduct = async (req, res) => {
   try {
     const { limit, page, sort } = req.query;
     const response = await ProductService.getAllProduct(
-      Number(limit) || 8,
+      Number(limit) || 100,
       Number(page) || 0,
       sort
     );
