@@ -117,22 +117,24 @@ export default function SignInPage() {
             type="password"
             label="PassWord"
           />
-          <Button
-            variant="outlined"
-            sx={{
-              width: { xs: "90%", md: "80%" },
-              height: "40px",
-              marginBottom: "20px",
-            }}
-            disabled={!email.length || !password.length || isLoading === true}
-            onClick={handleSignIn}
-          >
-            {isLoading ? (
-              <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
-            ) : (
-              <div>Sign In</div>
-            )}
-          </Button>
+          <span style={{ cursor: "not-allowed" }}>
+            <Button
+              variant="outlined"
+              sx={{
+                width: { xs: "90%", md: "80%" },
+                height: "40px",
+                marginBottom: "20px",
+              }}
+              disabled={!email.length || !password.length || isLoading === true}
+              onClick={handleSignIn}
+            >
+              {isLoading ? (
+                <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
+              ) : (
+                <div>Sign In</div>
+              )}
+            </Button>
+          </span>
 
           <Grid container>
             <Grid

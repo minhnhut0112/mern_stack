@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 
 const InputComponent = (props) => {
   const onChangeInput = (e) => {
-    props.onChange(e.target.value);
+    props.handleOnChange(e.target.value);
   };
   return (
     <div>

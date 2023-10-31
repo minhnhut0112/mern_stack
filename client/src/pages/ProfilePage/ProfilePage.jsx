@@ -13,7 +13,6 @@ import * as UserService from "../../service/UserService";
 import { useMutationHook } from "../../hooks/useMutationHook";
 import { updateUser } from "../../redux/slices/userSlice";
 import { getBase64 } from "../../utils";
-import { isError } from "react-query";
 
 export default function ProfilePage() {
   const VisuallyHiddenInput = styled("input")({
@@ -56,7 +55,7 @@ export default function ProfilePage() {
     if (isSuccess) {
       handleGetDetailsUser(user?.id, user?.access_token);
     }
-  }, [mutation]);
+  }, [isSuccess]);
 
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDetailsUser(id, token);
@@ -90,9 +89,6 @@ export default function ProfilePage() {
       avatar,
       access_token: user?.access_token,
     });
-    if (mutation) {
-      handleGetDetailsUser(user?.id, user?.access_token);
-    }
   };
 
   return (

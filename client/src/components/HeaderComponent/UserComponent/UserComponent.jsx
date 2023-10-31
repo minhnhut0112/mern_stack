@@ -1,14 +1,10 @@
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "../../../service/UserService";
@@ -37,6 +33,7 @@ const UserComponent = () => {
     await UserService.logoutUser();
     disPatch(resetUser());
     localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
   };
 
   useEffect(() => {
@@ -76,9 +73,16 @@ const UserComponent = () => {
             <Link style={{ color: "black" }} to="/myorder">
               <MenuItem onClick={handleClose}>My Order</MenuItem>
             </Link>
-
+            {user?.isAdmin && (
+              <div>
+                <Divider />
+                <Link style={{ color: "black" }} to="/system/admin">
+                  <MenuItem onClick={handleClose}>System Manager</MenuItem>
+                </Link>
+              </div>
+            )}
             <Divider />
-            <Link style={{ color: "black" }} to="/sign-in">
+            <Link style={{ color: "black" }} to="/">
               <MenuItem onClick={handleClose}>
                 <div onClick={handleLogout}>
                   <ListItemIcon>
