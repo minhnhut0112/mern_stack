@@ -38,11 +38,14 @@ export default function ProfilePage() {
 
   const mutation = useMutationHook((data) => {
     const { id, access_token, ...rests } = data;
-    UserService.updateUser(id, rests, access_token);
+    const res = UserService.updateUser(id, rests, access_token);
+    return res;
   });
 
   const disPatch = useDispatch();
-  const { isLoading, isSuccess } = mutation;
+  const { isLoading, isSuccess, data } = mutation;
+
+  console.log(data);
 
   useEffect(() => {
     setEmail(user?.email);
@@ -51,16 +54,18 @@ export default function ProfilePage() {
     setAvatar(user?.avatar);
   }, [user]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      handleGetDetailsUser(user?.id, user?.access_token);
-    }
-  }, [isSuccess]);
+  console.log(user);
 
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDetailsUser(id, token);
     disPatch(updateUser({ ...res?.data, access_token: token }));
   };
+
+  useEffect(() => {
+    if (isSuccess && data.status === "Ok") {
+      handleGetDetailsUser(user?.id, user?.access_token);
+    }
+  }, [isSuccess, data]);
 
   const handleOnChangeName = (value) => {
     setName(value);
