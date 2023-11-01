@@ -457,13 +457,24 @@ const AdminProduct = () => {
                       }}
                     >
                       Image 1
-                      <VisuallyHiddenInput
+                      <input
+                        style={{
+                          clip: "rect(0 0 0 0)",
+                          clipPath: "inset(50%)",
+                          height: 1,
+                          overflow: "hidden",
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          whiteSpace: "nowrap",
+                          width: 1,
+                        }}
                         onChange={handleOnChangeImage}
                         type="file"
                       />
                     </Button>
                   </Grid>
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={3}>
                     <Avatar
                       variant="square"
                       // src={stateProduct?.image && stateProduct?.image}
@@ -528,7 +539,7 @@ const AdminProduct = () => {
                       Image 4
                       <VisuallyHiddenInput type="file" />
                     </Button>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
                 <hr style={{ marginRight: 30, marginBottom: "20px" }} />
                 <span style={{ display: "flex", justifyContent: "end" }}>

@@ -40,7 +40,7 @@ export const routes = [
     showHeaderAndFooter: true,
   },
   {
-    path: "/order",
+    path: "/myorder",
     page: OrderPage,
     showHeaderAndFooter: true,
   },

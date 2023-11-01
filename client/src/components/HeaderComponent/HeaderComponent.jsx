@@ -64,7 +64,6 @@ function HeaderComponent() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -75,7 +74,9 @@ function HeaderComponent() {
               textDecoration: "none",
             }}
           >
-            <img width={80} src={logobig} alt="logo" />
+            <Link to="/">
+              <img width={80} src={logobig} alt="logo" />
+            </Link>
           </Typography>
           <Box
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
