@@ -120,7 +120,7 @@ export default function ProfilePage() {
       )}
       <h3
         style={{
-          marginLeft: "80px",
+          marginLeft: "30%",
           marginTop: "40px",
           marginBottom: "30px",
         }}
