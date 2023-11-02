@@ -52,7 +52,6 @@ const AdminProduct = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpenMess(false);
   };
 

@@ -6,7 +6,7 @@ import "./style.scss";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Avatar, CircularProgress } from "@mui/material";
+import { Alert, Avatar, CircularProgress, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as UserService from "../../service/UserService";
@@ -61,8 +61,17 @@ export default function ProfilePage() {
     disPatch(updateUser({ ...res?.data, access_token: token }));
   };
 
+  const [openMess, setOpenMess] = useState(false);
+  const handleCloseMess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenMess(false);
+  };
+
   useEffect(() => {
     if (isSuccess && data.status === "Ok") {
+      setOpenMess(true);
       handleGetDetailsUser(user?.id, user?.access_token);
     }
   }, [isSuccess, data]);
@@ -98,6 +107,22 @@ export default function ProfilePage() {
 
   return (
     <div>
+      {openMess && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={2000}
+          onClose={handleCloseMess}
+        >
+          <Alert
+            onClose={handleCloseMess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Update successfully!
+          </Alert>
+        </Snackbar>
+      )}
       <h3
         style={{
           marginLeft: "80px",
