@@ -254,6 +254,7 @@ const AdminProduct = () => {
 
   const mutationDeleted = useMutationHook((data) => {
     const { id, token } = data;
+    console.log(data);
     const res = ProductService.deleteProduct(id, token);
     return res;
   });
@@ -290,7 +291,7 @@ const AdminProduct = () => {
 
   return (
     <div>
-      {openMess && (
+      {(openMess || openMessDeleted) && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={true}

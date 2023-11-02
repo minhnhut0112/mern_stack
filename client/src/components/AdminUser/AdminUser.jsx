@@ -19,7 +19,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   Snackbar,
   TextField,
 } from "@mui/material";
@@ -149,20 +153,27 @@ const AdminUser = () => {
   const columns = [
     { field: "id", headerName: "QTT", width: 50 },
     { field: "name", headerName: "Name", width: 150 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "phone", headerName: "Phone", width: 150 },
-    { field: "address", headerName: "Address", width: 250 },
-    { field: "isAdmin", headerName: "Admin", width: 80 },
     {
       field: "avatar",
       headerName: "Avatar",
-      width: 150,
-      renderCell: (params) => <Avatar alt={params.value} src={params.value} />,
+      width: 80,
+      renderCell: (params) => (
+        <Avatar
+          sx={{ cursor: "pointer" }}
+          alt={params.value}
+          src={params.value}
+          onClick={() => setIdUser(params.row._id)}
+        />
+      ),
     },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "phone", headerName: "Phone", width: 150 },
+    { field: "address", headerName: "Address", width: 350 },
+    { field: "isAdmin", headerName: "Admin", width: 70 },
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <>
           <EditOutlinedIcon
@@ -235,7 +246,7 @@ const AdminUser = () => {
 
   return (
     <div>
-      {openMess && (
+      {(openMess || openMessDeleted) && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={true}
@@ -247,7 +258,7 @@ const AdminUser = () => {
             severity="success"
             sx={{ width: "100%" }}
           >
-            This is a success message!
+            Successful implementation!
           </Alert>
         </Snackbar>
       )}
@@ -300,7 +311,7 @@ const AdminUser = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  Edit User
+                  Details User
                   <span>
                     <CancelPresentationIcon
                       sx={{ marginRight: 4, cursor: "pointer" }}
@@ -384,17 +395,26 @@ const AdminUser = () => {
                       type="text"
                       label="Address"
                     />
-
-                    <TextField
+                    <FormControl
                       sx={{
-                        width: { xs: "90%", md: "90%", marginBottom: "20px" },
+                        width: { xs: "90%", md: "90%" },
                       }}
-                      value={stateUser["isAdmin"]}
-                      onChange={handleOnchange}
-                      name="isAdmin"
-                      type="text"
-                      label="Admin"
-                    />
+                    >
+                      <InputLabel id="demo-simple-select-label">
+                        Admin
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={stateUser["isAdmin"]}
+                        label="Admin"
+                        name="isAdmin"
+                        onChange={handleOnchange}
+                      >
+                        <MenuItem value={true}>True</MenuItem>
+                        <MenuItem value={false}>False</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                 </Grid>
 
@@ -417,7 +437,6 @@ const AdminUser = () => {
                         !stateUser.name ||
                         !stateUser.email ||
                         !stateUser.phone ||
-                        !stateUser.isAdmin ||
                         !stateUser.address ||
                         !stateUser.avatar
                       }
