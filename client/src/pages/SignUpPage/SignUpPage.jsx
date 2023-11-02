@@ -44,8 +44,6 @@ const SignUpPage = () => {
     }
   }, [data]);
 
-  console.log(mutation);
-
   const handleSignUp = () => {
     mutation.mutate({
       email,

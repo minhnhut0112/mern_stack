@@ -115,8 +115,6 @@ const AdminProduct = () => {
 
   const getAllProduct = async () => {
     const res = await ProductService.getAllProduct();
-    console.log("res", res);
-
     return res;
   };
 
@@ -254,7 +252,6 @@ const AdminProduct = () => {
 
   const mutationDeleted = useMutationHook((data) => {
     const { id, token } = data;
-    console.log(data);
     const res = ProductService.deleteProduct(id, token);
     return res;
   });

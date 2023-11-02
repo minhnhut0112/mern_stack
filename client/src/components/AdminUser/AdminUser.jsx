@@ -67,8 +67,6 @@ const AdminUser = () => {
   });
 
   const [stateUser, setStateUser] = useState(inittial());
-  console.log(stateUser);
-
   const handleOnchange = (e) => {
     setStateUser({
       ...stateUser,
@@ -81,7 +79,6 @@ const AdminUser = () => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file);
     }
-    console.log(file.preview);
     setStateUser({
       ...stateUser,
       avatar: file.preview,

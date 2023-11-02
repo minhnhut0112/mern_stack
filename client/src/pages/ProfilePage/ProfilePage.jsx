@@ -44,17 +44,12 @@ export default function ProfilePage() {
 
   const disPatch = useDispatch();
   const { isLoading, isSuccess, data } = mutation;
-
-  console.log(data);
-
   useEffect(() => {
     setEmail(user?.email);
     setName(user?.name);
     setPhone(user?.phone);
     setAvatar(user?.avatar);
   }, [user]);
-
-  console.log(user);
 
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDetailsUser(id, token);

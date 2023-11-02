@@ -12,8 +12,6 @@ import { useQuery } from "react-query";
 const HomePage = () => {
   const fetchAllProduct = async () => {
     const res = await ProductService.getAllProduct();
-    console.log(res);
-
     return res;
   };
 
