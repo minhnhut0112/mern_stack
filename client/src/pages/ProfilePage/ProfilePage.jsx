@@ -153,10 +153,11 @@ export default function ProfilePage() {
             variant="contained"
             startIcon={<CloudUploadIcon />}
           >
-            Upload file
+            Avatar
             <VisuallyHiddenInput
               onChange={handleOnChangeAvatar}
               type="file"
+              accept="image/*"
               max={1}
             />
           </Button>

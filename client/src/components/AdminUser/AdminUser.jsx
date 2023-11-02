@@ -345,6 +345,7 @@ const AdminUser = () => {
                     }}
                     onChange={handleOnChangeAvatar}
                     type="file"
+                    accept="image/*"
                   />
                 </Button>
 

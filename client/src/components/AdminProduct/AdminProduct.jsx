@@ -53,6 +53,7 @@ const AdminProduct = () => {
       return;
     }
     setOpenMess(false);
+    setOpenMessDeleted(false);
   };
 
   const VisuallyHiddenInput = styled("input")({
@@ -94,14 +95,6 @@ const AdminProduct = () => {
 
   const { isLoading, isSuccess, data, isError } = mutation;
 
-  useEffect(() => {
-    if (isSuccess && data?.status === "True") {
-      handleClose();
-      setOpenMess(true);
-    } else if (data?.status === "Err") {
-    }
-  }, [isSuccess, isError]);
-
   const handleOnchange = (e) => {
     setStateProduct({
       ...stateProduct,
@@ -142,6 +135,14 @@ const AdminProduct = () => {
       }
     );
   };
+
+  useEffect(() => {
+    if (isSuccess && data?.status === "True") {
+      handleClose();
+      setOpenMess(true);
+    } else if (data?.status === "Err") {
+    }
+  }, [isSuccess, isError]);
 
   //listproduct
 
@@ -442,7 +443,7 @@ const AdminProduct = () => {
                       src={stateProduct?.image && stateProduct?.image}
                       sx={{ width: 120, height: 150 }}
                     >
-                      Image 1
+                      Image
                     </Avatar>
 
                     <Button
@@ -471,6 +472,7 @@ const AdminProduct = () => {
                         }}
                         onChange={handleOnChangeImage}
                         type="file"
+                        accept="image/*"
                       />
                     </Button>
                   </Grid>
