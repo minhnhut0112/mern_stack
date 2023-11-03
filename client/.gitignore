@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /package-lock.json
-# /src/assets/image
+/src/assets/image
 /.pnp
 .pnp.js
 
