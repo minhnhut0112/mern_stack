@@ -66,11 +66,11 @@ const UserComponent = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <Link style={{ color: "black" }} to="/myprofile">
+            <Link style={{ color: "black" }} to="/profile">
               <MenuItem onClick={handleClose}>My Profile</MenuItem>
             </Link>
 
-            <Link style={{ color: "black" }} to="/myorder">
+            <Link style={{ color: "black" }} to="/order">
               <MenuItem onClick={handleClose}>My Order</MenuItem>
             </Link>
             {user?.isAdmin && (

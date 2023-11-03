@@ -23,18 +23,21 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import TableComponent from "../TableComponent/TableComponent";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AdminProduct = () => {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
   const [idProduct, setIdProduct] = useState("");
   const [openComfirm, setOpenComfirm] = useState(false);
   const [idProductDelete, setIdProductDelete] = useState(false);
+  const [loadingProduct, setloadingProduct] = useState(false);
+  const [products, setProducts] = useState([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -43,7 +46,7 @@ const AdminProduct = () => {
     setOpenComfirm(false);
     setIdProductDelete("");
     setIdProduct("");
-    setStateProduct(inittial());
+    setStateProduct(inittial);
   };
 
   const [openMess, setOpenMess] = useState(false);
@@ -55,18 +58,6 @@ const AdminProduct = () => {
     setOpenMess(false);
     setOpenMessDeleted(false);
   };
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   const inittial = () => ({
     name: "",
@@ -114,24 +105,34 @@ const AdminProduct = () => {
   };
 
   const getAllProduct = async () => {
-    const res = await ProductService.getAllProduct();
-    return res;
+    try {
+      setloadingProduct(true);
+      const res = await ProductService.getAllProduct();
+      if (res.data) {
+        setProducts(res.data);
+        setloadingProduct(false);
+      }
+    } catch (error) {
+      // Handle errors
+    }
   };
 
-  const fetchProduct = useQuery(["products"], getAllProduct);
-  const { isLoading: loadingProduct, data: products } = fetchProduct;
+  useEffect(() => {
+    getAllProduct();
+  }, []);
 
-  const handleAddProduct = () => {
-    mutation.mutate(
-      {
+  const handleAddProduct = async () => {
+    try {
+      await mutation.mutateAsync({
         ...stateProduct,
-      },
-      {
-        onSettled: () => {
-          fetchProduct.refetch();
-        },
-      }
-    );
+      });
+
+      await getAllProduct(); // Refetch the product list
+
+      handleClose();
+    } catch (error) {
+      // Handle errors
+    }
   };
 
   useEffect(() => {
@@ -140,7 +141,7 @@ const AdminProduct = () => {
       setOpenMess(true);
     } else if (data?.status === "Err") {
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, data]);
 
   //listproduct
 
@@ -175,19 +176,20 @@ const AdminProduct = () => {
 
   const user = useSelector((state) => state.user);
 
-  const handleUpdateProduct = () => {
-    mutationUpdate.mutate(
-      {
+  const handleUpdateProduct = async () => {
+    try {
+      await mutationUpdate.mutateAsync({
         id: idProduct,
         token: user?.access_token,
         ...stateProduct,
-      },
-      {
-        onSettled: () => {
-          fetchProduct.refetch();
-        },
-      }
-    );
+      });
+
+      await getAllProduct(); // Refetch the product list
+
+      handleClose();
+    } catch (error) {
+      // Handle errors
+    }
   };
 
   useEffect(() => {
@@ -233,8 +235,8 @@ const AdminProduct = () => {
   let id = 0;
 
   const rows =
-    products?.data?.length &&
-    products?.data?.map((product) => {
+    products?.length &&
+    products?.map((product) => {
       return {
         ...product,
         id: ++id,
@@ -265,25 +267,26 @@ const AdminProduct = () => {
   const [openMessDeleted, setOpenMessDeleted] = useState(false);
 
   useEffect(() => {
-    if (isSuccessDeteted && dataDeleted?.status === "Ok") {
+    if (isSuccessDeteted && dataDeleted?.status === "OK") {
       handleClose();
       setOpenMessDeleted(true);
     } else if (data?.status === "Err") {
     }
   }, [isSuccessDeteted, dataDeleted]);
 
-  const handleDeleteProduct = () => {
-    mutationDeleted.mutate(
-      {
+  const handleDeleteProduct = async () => {
+    try {
+      await mutationDeleted.mutateAsync({
         id: idProductDelete,
         token: user?.access_token,
-      },
-      {
-        onSettled: () => {
-          fetchProduct.refetch();
-        },
-      }
-    );
+      });
+
+      await getAllProduct(); // Refetch the product list
+
+      handleClose();
+    } catch (error) {
+      // Handle errors
+    }
   };
 
   return (
@@ -326,7 +329,7 @@ const AdminProduct = () => {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                transform: "translate(-50%, -50%)",
+                transform: "translate(0%, -50%)",
                 width: 600,
                 bgcolor: "#f5f5f5",
                 boxShadow: 24,

@@ -47,6 +47,10 @@ const AdminUser = () => {
     setStateUser(inittial());
   };
 
+  const disabled = () => {
+    setOpen(true);
+  };
+
   const [openMess, setOpenMess] = useState(false);
 
   const handleCloseMess = (event, reason) => {
@@ -90,7 +94,7 @@ const AdminUser = () => {
     return res;
   };
 
-  const fetchUser = useQuery(["users"], getAllUser);
+  const fetchUser = useQuery({ queryKey: ["users"], queryFn: getAllUser });
   const { isLoading: loadingUser, data: users } = fetchUser;
 
   //listproduct
@@ -141,7 +145,7 @@ const AdminUser = () => {
   };
 
   useEffect(() => {
-    if (isSuccessUpdated && dataUpdated?.status === "Ok") {
+    if (isSuccessUpdated && dataUpdated?.status === "OK") {
       handleClose();
       setOpenMess(true);
     }
@@ -221,7 +225,7 @@ const AdminUser = () => {
   const [openMessDeleted, setOpenMessDeleted] = useState(false);
 
   useEffect(() => {
-    if (isSuccessDeteted && dataDeleted?.status === "Ok") {
+    if (isSuccessDeteted && dataDeleted?.status === "OK") {
       handleClose();
       setOpenMessDeleted(true);
     }
@@ -312,7 +316,7 @@ const AdminUser = () => {
                   <span>
                     <CancelPresentationIcon
                       sx={{ marginRight: 4, cursor: "pointer" }}
-                      onClick={handleClose}
+                      onClick={!isLoadingUpated ? handleClose : disabled}
                     />
                   </span>
                 </div>
@@ -419,6 +423,7 @@ const AdminUser = () => {
                 <hr style={{ marginRight: 30, marginBottom: "20px" }} />
                 <span style={{ display: "flex", justifyContent: "end" }}>
                   <Button
+                    disabled={isLoadingUpated}
                     variant="outlined"
                     sx={{
                       height: "40px",

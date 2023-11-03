@@ -65,7 +65,7 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    if (isSuccess && data.status === "Ok") {
+    if (isSuccess && data.status === "OK") {
       setOpenMess(true);
       handleGetDetailsUser(user?.id, user?.access_token);
     }
@@ -132,7 +132,7 @@ export default function ProfilePage() {
         spacing={2}
         style={{ display: "flex", justifyContent: "center" }}
       >
-        <Grid item xs={5}>
+        <Grid item xs={7} md={5}>
           <Avatar
             src={avatar && avatar}
             alt="Remy Sharp"

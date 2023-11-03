@@ -42,7 +42,7 @@ const updateProduct = (id, data) => {
       });
       if (checkProduct === null) {
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "The product is not defined",
         });
       }
@@ -70,7 +70,7 @@ const deleteProduct = (id) => {
       });
       if (checkProduct === null) {
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "The product is not defined",
         });
       }
@@ -78,7 +78,7 @@ const deleteProduct = (id) => {
       await Product.findByIdAndDelete(id);
 
       resolve({
-        status: "Ok",
+        status: "OK",
         message: "Delete product success",
       });
     } catch (e) {
@@ -87,21 +87,63 @@ const deleteProduct = (id) => {
   });
 };
 
-const getAllProduct = (limit, page, sort) => {
+const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
       const totalProduct = await Product.count();
-      const allProduct = await Product.find()
-        .limit(limit)
-        .skip(page * limit)
-        .sort({ name: sort });
+      let allProduct = [];
+      if (filter) {
+        const label = filter[0];
+        const allObjectFilter = await Product.find({
+          [label]: { $regex: filter[1] },
+        })
+          .limit(limit)
+          .skip(page * limit)
+          .sort({ createdAt: -1, updatedAt: -1 });
+        resolve({
+          status: "OK",
+          message: "Success",
+          data: allObjectFilter,
+          total: totalProduct,
+          pageCurrent: Number(page + 1),
+          totalPage: Math.ceil(totalProduct / limit),
+        });
+      }
+      if (sort) {
+        const objectSort = {};
+        objectSort[sort[1]] = sort[0];
+        const allProductSort = await Product.find()
+          .limit(limit)
+          .skip(page * limit)
+          .sort(objectSort)
+          .sort({ createdAt: -1, updatedAt: -1 });
+        resolve({
+          status: "OK",
+          message: "Success",
+          data: allProductSort,
+          total: totalProduct,
+          pageCurrent: Number(page + 1),
+          totalPage: Math.ceil(totalProduct / limit),
+        });
+      }
+      if (!limit) {
+        allProduct = await Product.find().sort({
+          createdAt: -1,
+          updatedAt: -1,
+        });
+      } else {
+        allProduct = await Product.find()
+          .limit(limit)
+          .skip(page * limit)
+          .sort({ createdAt: -1, updatedAt: -1 });
+      }
       resolve({
-        status: "Ok",
-        message: "Get all product success",
+        status: "OK",
+        message: "Success",
         data: allProduct,
         total: totalProduct,
         pageCurrent: Number(page + 1),
-        toatlPage: Math.ceil(totalProduct / limit),
+        totalPage: Math.ceil(totalProduct / limit),
       });
     } catch (e) {
       reject(e);
@@ -117,12 +159,12 @@ const getdetailsProduct = (id) => {
       });
       if (product === null) {
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "The product is not defined in db",
         });
       }
       resolve({
-        status: "Ok",
+        status: "OK",
         message: "Get details product success",
         data: product,
       });

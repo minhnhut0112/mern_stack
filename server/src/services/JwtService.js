@@ -41,7 +41,7 @@ const refreshToken = (token) => {
           isAdmin: user?.isAdmin,
         });
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "success",
           access_token,
         });

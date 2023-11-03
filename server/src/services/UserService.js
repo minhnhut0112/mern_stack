@@ -89,7 +89,7 @@ const updateUser = (id, data) => {
       });
       if (checkUser === null) {
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "The user is not defined",
         });
       }
@@ -97,7 +97,7 @@ const updateUser = (id, data) => {
       const updateUser = await User.findByIdAndUpdate(id, data, { new: true });
 
       resolve({
-        status: "Ok",
+        status: "OK",
         message: "Update user success",
         data: updateUser,
       });
@@ -115,7 +115,7 @@ const deleteUser = (id) => {
       });
       if (checkUser === null) {
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "The user is not defined in db",
         });
       }
@@ -123,7 +123,7 @@ const deleteUser = (id) => {
       await User.findByIdAndDelete(id);
 
       resolve({
-        status: "Ok",
+        status: "OK",
         message: "Delete user success",
       });
     } catch (e) {
@@ -137,7 +137,7 @@ const getAllUser = () => {
     try {
       const allUser = await User.find();
       resolve({
-        status: "Ok",
+        status: "OK",
         message: "Get all user success",
         data: allUser,
       });
@@ -155,12 +155,12 @@ const getdetailsUser = (id) => {
       });
       if (user === null) {
         resolve({
-          status: "Ok",
+          status: "OK",
           message: "The user is not defined in db",
         });
       }
       resolve({
-        status: "Ok",
+        status: "OK",
         message: "Get details user success",
         data: user,
       });

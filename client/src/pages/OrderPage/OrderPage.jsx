@@ -1,12 +1,7 @@
 import React from "react";
-import OrderComponent from "../../components/OrderComponent/OrderComponent";
 
 const OrderPage = () => {
-  return (
-    <div>
-      <OrderComponent />
-    </div>
-  );
+  return <div>order</div>;
 };
 
 export default OrderPage;

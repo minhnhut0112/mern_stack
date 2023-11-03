@@ -17,18 +17,30 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/image/jordan-logo.png";
 import logomini2 from "../../assets/image/conver-logo.png";
 import logobig from "../../assets/image/logo-nike.png";
+import { useState } from "react";
+import ModalSearchComponent from "../ModalSearchComponent/ModalSearchComponent";
+import { LinearProgress } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../redux/slices/userSlice";
+import { searchProduct } from "../../redux/slices/productSlice";
 
 const pages = ["New & Feature", "Jordan", "Runing", "Football"];
 
-function HeaderComponent() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-
+const HeaderComponent = () => {
+  const [anchorElNav, setAnchorElNav] = useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const dispatch = useDispatch();
+
+  // const [search, setSearch] = useState("");
+
+  const handleOnChangeSearch = (e) => {
+    dispatch(searchProduct(e.target.value));
   };
 
   return (
@@ -124,7 +136,6 @@ function HeaderComponent() {
             variant="h5"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -136,7 +147,9 @@ function HeaderComponent() {
               textDecoration: "none",
             }}
           >
-            <img width={80} src={logobig} alt="logo" />
+            <Link to="/">
+              <img width={80} src={logobig} alt="logo" />
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -159,8 +172,10 @@ function HeaderComponent() {
               alignItems: "center",
             }}
           >
-            <SearchComponent />
-            <Link to="cart" style={{ color: "black" }}>
+            <div style={{ cursor: "pointer" }}>
+              <SearchComponent onChange={handleOnChangeSearch} />
+            </div>
+            <Link to="/cart" style={{ color: "black" }}>
               <Badge badgeContent={4} color="error">
                 <ShoppingCartOutlinedIcon />
               </Badge>
@@ -170,5 +185,5 @@ function HeaderComponent() {
       </Container>
     </AppBar>
   );
-}
+};
 export default HeaderComponent;
