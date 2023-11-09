@@ -58,6 +58,7 @@ const AdminUser = () => {
       return;
     }
     setOpenMess(false);
+    setOpenMessDeleted(false);
   };
 
   const inittial = () => ({
@@ -440,7 +441,6 @@ const AdminUser = () => {
                         !stateUser.name ||
                         !stateUser.email ||
                         !stateUser.phone ||
-                        !stateUser.address ||
                         !stateUser.avatar
                       }
                       variant="outlined"

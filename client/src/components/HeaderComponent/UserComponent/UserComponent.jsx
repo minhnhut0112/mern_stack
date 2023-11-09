@@ -4,7 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "../../../service/UserService";
@@ -29,11 +29,14 @@ const UserComponent = () => {
 
   const disPatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     await UserService.logoutUser();
     disPatch(resetUser());
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    navigate("/sign-in");
   };
 
   useEffect(() => {
@@ -82,16 +85,14 @@ const UserComponent = () => {
               </div>
             )}
             <Divider />
-            <Link style={{ color: "black" }} to="/">
+            <div onClick={handleLogout}>
               <MenuItem onClick={handleClose}>
-                <div onClick={handleLogout}>
-                  <ListItemIcon>
-                    <LogoutIcon fontSize="small" />
-                  </ListItemIcon>
-                  Log out
-                </div>
+                <ListItemIcon>
+                  <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                Log out
               </MenuItem>
-            </Link>
+            </div>
           </Menu>
         </div>
       ) : (

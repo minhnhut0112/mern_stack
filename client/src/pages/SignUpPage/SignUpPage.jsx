@@ -101,25 +101,25 @@ const SignUpPage = () => {
           />
 
           <InputComponent
-            value={name.trim()}
+            value={name}
             handleOnChange={handleOnChangeFullname}
             type="text"
             label="Full Name"
           />
           <InputComponent
-            value={phone.trim()}
+            value={phone}
             handleOnChange={handleOnChangePhone}
             type="text"
             label="Phone"
           />
           <InputComponent
-            value={password.trim()}
+            value={password}
             handleOnChange={handleOnChangePassword}
             type="password"
             label="PassWord"
           />
           <InputComponent
-            value={confirmPassword.trim()}
+            value={confirmPassword}
             handleOnChange={handleOnChangeConfirmPassword}
             type="password"
             label="Confirm PassWord"

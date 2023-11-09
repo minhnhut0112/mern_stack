@@ -173,10 +173,27 @@ const getdetailsProduct = (id) => {
     }
   });
 };
+
+const getAllType = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allType = await Product.distinct("type");
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: allType,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
   getAllProduct,
   getdetailsProduct,
+  getAllType,
 };

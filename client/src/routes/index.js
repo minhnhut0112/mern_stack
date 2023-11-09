@@ -8,6 +8,8 @@ import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import TypeProduct from "../pages/TypeProduct/TypeProduct";
 import OrderPage from "../pages/OrderPage/OrderPage";
+import CheckOutPage from "../pages/CheckOutPage/CheckOutPage";
+import CheckOutSuccessPage from "../pages/CheckOutSuccessPage/CheckOutSuccessPage";
 
 export const routes = [
   {
@@ -16,7 +18,7 @@ export const routes = [
     showHeaderAndFooter: true,
   },
   {
-    path: "/category",
+    path: "/product/:type",
     page: TypeProduct,
     showHeaderAndFooter: true,
   },
@@ -31,13 +33,23 @@ export const routes = [
     showHeaderAndFooter: false,
   },
   {
-    path: "/product-detail",
+    path: "/product-detail/:id",
     page: ProductDetailPage,
     showHeaderAndFooter: true,
   },
   {
     path: "/cart",
     page: CartPage,
+    showHeaderAndFooter: true,
+  },
+  {
+    path: "/checkout",
+    page: CheckOutPage,
+    showHeaderAndFooter: true,
+  },
+  {
+    path: "/checkoutSuccess",
+    page: CheckOutSuccessPage,
     showHeaderAndFooter: true,
   },
   {

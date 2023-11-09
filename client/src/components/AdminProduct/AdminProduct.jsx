@@ -19,7 +19,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   Snackbar,
   TextField,
 } from "@mui/material";
@@ -29,7 +33,6 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AdminProduct = () => {
-  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
@@ -65,7 +68,7 @@ const AdminProduct = () => {
     image: "",
     type: "",
     countInStock: "",
-    newType: "",
+    newtype: "",
     discount: "",
   });
 
@@ -84,7 +87,7 @@ const AdminProduct = () => {
     return res;
   });
 
-  const { isLoading, isSuccess, data, isError } = mutation;
+  const { isLoading, isSuccess, data } = mutation;
 
   const handleOnchange = (e) => {
     setStateProduct({
@@ -123,11 +126,25 @@ const AdminProduct = () => {
 
   const handleAddProduct = async () => {
     try {
+      const dateAdd = {
+        name: stateProduct.name,
+        price: stateProduct.price,
+        image: stateProduct.image,
+        type:
+          stateProduct.type === "addtype"
+            ? stateProduct.newtype
+            : stateProduct.type,
+        countInStock: stateProduct.countInStock,
+        discount: stateProduct.discount,
+      };
       await mutation.mutateAsync({
-        ...stateProduct,
+        ...dateAdd,
       });
 
-      await getAllProduct(); // Refetch the product list
+      await getAllProduct();
+      await fetchAllTypeProduct();
+      setloadingProduct(false);
+      // Refetch the product list
 
       handleClose();
     } catch (error) {
@@ -177,14 +194,28 @@ const AdminProduct = () => {
   const user = useSelector((state) => state.user);
 
   const handleUpdateProduct = async () => {
+    const dateAdd = {
+      name: stateProduct.name,
+      price: stateProduct.price,
+      image: stateProduct.image,
+      type:
+        stateProduct.type === "addtype"
+          ? stateProduct.newtype
+          : stateProduct.type,
+      countInStock: stateProduct.countInStock,
+      discount: stateProduct.discount,
+    };
     try {
       await mutationUpdate.mutateAsync({
         id: idProduct,
         token: user?.access_token,
-        ...stateProduct,
+        ...dateAdd,
       });
 
-      await getAllProduct(); // Refetch the product list
+      await getAllProduct();
+      await fetchAllTypeProduct();
+      setloadingProduct(false);
+      // Refetch the product list
 
       handleClose();
     } catch (error) {
@@ -202,11 +233,11 @@ const AdminProduct = () => {
 
   const columns = [
     { field: "id", headerName: "QTT", width: 0 },
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "type", headerName: "Type", width: 150 },
-    { field: "price", headerName: "Price", width: 150 },
-    { field: "discount", headerName: "Discount", width: 150 },
-    { field: "countInStock", headerName: "InStock", width: 150 },
+    { field: "name", headerName: "Name", width: 250 },
+    { field: "type", headerName: "Type", width: 100 },
+    { field: "price", headerName: "Price", width: 100 },
+    { field: "discount", headerName: "Discount", width: 100 },
+    { field: "countInStock", headerName: "InStock", width: 100 },
     {
       field: "image",
       headerName: "image",
@@ -238,6 +269,7 @@ const AdminProduct = () => {
     products?.length &&
     products?.map((product) => {
       return {
+        key: product,
         ...product,
         id: ++id,
         _id: product._id,
@@ -281,13 +313,37 @@ const AdminProduct = () => {
         token: user?.access_token,
       });
 
-      await getAllProduct(); // Refetch the product list
+      await getAllProduct();
+      await fetchAllTypeProduct();
+      setloadingProduct(false);
+      // Refetch the product list
 
       handleClose();
     } catch (error) {
       // Handle errors
     }
   };
+
+  const [type, setType] = useState([]);
+
+  const fetchAllTypeProduct = async () => {
+    try {
+      setloadingProduct(true);
+      const res = await ProductService.getAllTypeProduct();
+      if (res.data) {
+        setType(res.data);
+      }
+    } catch (error) {
+      // Handle errors
+    }
+  };
+
+  console.log(type);
+  console.log(stateProduct.type);
+
+  useEffect(() => {
+    fetchAllTypeProduct();
+  }, []);
 
   return (
     <div>
@@ -329,7 +385,7 @@ const AdminProduct = () => {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                transform: "translate(0%, -50%)",
+                transform: "translate(-50%, -50%)",
                 width: 600,
                 bgcolor: "#f5f5f5",
                 boxShadow: 24,
@@ -400,16 +456,30 @@ const AdminProduct = () => {
                       type="text"
                       label="Price"
                     />
-                    <TextField
+                    <FormControl
                       sx={{
-                        width: { xs: "90%", md: "90%", marginBottom: "20px" },
+                        width: "90%",
                       }}
-                      value={stateProduct["type"]}
-                      onChange={handleOnchange}
-                      name="type"
-                      type="text"
-                      label="Type"
-                    />
+                    >
+                      <InputLabel id="demo-simple-select-label">
+                        Type
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={stateProduct["type"]}
+                        onChange={handleOnchange}
+                        name="type"
+                        label="Type"
+                      >
+                        {type.map((category) => (
+                          <MenuItem key={category} value={category}>
+                            {category}
+                          </MenuItem>
+                        ))}
+                        <MenuItem value="addtype">New Type</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -433,7 +503,23 @@ const AdminProduct = () => {
                       type="text"
                       label="Discount"
                     />
-                    {/*   */}
+                    {stateProduct.type === "addtype" && (
+                      <>
+                        <TextField
+                          sx={{
+                            width: {
+                              xs: "90%",
+                              md: "90%",
+                              marginBottom: "20px",
+                            },
+                          }}
+                          onChange={handleOnchange}
+                          name="newtype"
+                          type="text"
+                          label="New Type"
+                        />
+                      </>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container style={{ marginBottom: "20px" }}>
@@ -441,7 +527,7 @@ const AdminProduct = () => {
                     <Avatar
                       variant="square"
                       src={stateProduct?.image && stateProduct?.image}
-                      sx={{ width: 120, height: 150 }}
+                      sx={{ width: 120, height: 150, margin: "10px 0px" }}
                     >
                       Image
                     </Avatar>
@@ -453,7 +539,7 @@ const AdminProduct = () => {
                       style={{
                         width: 120,
                         height: 40,
-                        marginTop: 10,
+                        marginTop: 0,
                         borderRadius: 0,
                       }}
                     >

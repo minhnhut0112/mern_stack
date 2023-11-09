@@ -33,7 +33,7 @@ export default function SignInPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && data?.status === "OK") {
       if (location.state) {
         navigate(location.state);
       } else {
@@ -51,7 +51,7 @@ export default function SignInPage() {
         }
       }
     }
-  }, [isSuccess]);
+  }, [isSuccess, data]);
 
   const handleGetDetailsUser = async (id, token) => {
     const storage = localStorage.getItem("refresh_token");

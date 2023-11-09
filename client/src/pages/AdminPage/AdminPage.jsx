@@ -10,9 +10,20 @@ import HeaderAdmin from "../../components/HeaderAdmin/HeaderAdmin";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user.isAdmin) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div

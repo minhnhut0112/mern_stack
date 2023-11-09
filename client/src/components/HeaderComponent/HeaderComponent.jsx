@@ -13,21 +13,19 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/image/jordan-logo.png";
 import logomini2 from "../../assets/image/conver-logo.png";
 import logobig from "../../assets/image/logo-nike.png";
 import { useState } from "react";
-import ModalSearchComponent from "../ModalSearchComponent/ModalSearchComponent";
-import { LinearProgress } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { updateUser } from "../../redux/slices/userSlice";
+import * as ProductService from "../../service/ProductService";
+import { useDispatch, useSelector } from "react-redux";
 import { searchProduct } from "../../redux/slices/productSlice";
-
-const pages = ["New & Feature", "Jordan", "Runing", "Football"];
+import { useEffect } from "react";
 
 const HeaderComponent = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [typeProducts, setTypeProducts] = useState([]);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -37,11 +35,30 @@ const HeaderComponent = () => {
 
   const dispatch = useDispatch();
 
-  // const [search, setSearch] = useState("");
-
   const handleOnChangeSearch = (e) => {
     dispatch(searchProduct(e.target.value));
   };
+
+  const fetchAllTypeProduct = async () => {
+    const res = await ProductService.getAllTypeProduct();
+    if (res?.status === "OK") {
+      setTypeProducts(res?.data);
+    }
+  };
+
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    fetchAllTypeProduct();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const navigateType = (type) => {
+    navigate(`/product/${type}`);
+  };
+
+  const order = useSelector((state) => state.order);
 
   return (
     <AppBar
@@ -123,11 +140,19 @@ const HeaderComponent = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              <MenuItem>
+                <Link to="/" style={{ color: "black" }}>
+                  <Typography textAlign="center">New & Feature</Typography>
+                </Link>
+              </MenuItem>
+              {typeProducts.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Link style={{ color: "black" }} to="/category">
-                    <Typography textAlign="center">{page}</Typography>
-                  </Link>
+                  <Typography
+                    textAlign="center"
+                    onClick={() => navigateType(page)}
+                  >
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -152,15 +177,20 @@ const HeaderComponent = () => {
             </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            <Button sx={{ my: 2, color: "black", display: "block" }}>
+              <Link to="/" style={{ color: "black" }}>
+                <h3 textAlign="center">New & Feature</h3>
+              </Link>
+            </Button>
+            {typeProducts.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "black", display: "block" }}
               >
-                <Link style={{ color: "black" }} to="/category">
+                <h3 textAlign="center" onClick={() => navigateType(page)}>
                   {page}
-                </Link>
+                </h3>
               </Button>
             ))}
           </Box>
@@ -176,9 +206,17 @@ const HeaderComponent = () => {
               <SearchComponent onChange={handleOnChangeSearch} />
             </div>
             <Link to="/cart" style={{ color: "black" }}>
-              <Badge badgeContent={4} color="error">
-                <ShoppingCartOutlinedIcon />
-              </Badge>
+              {user?.id ? (
+                <>
+                  <Badge badgeContent={order?.orderItems?.length} color="error">
+                    <ShoppingCartOutlinedIcon />
+                  </Badge>
+                </>
+              ) : (
+                <>
+                  <ShoppingCartOutlinedIcon />
+                </>
+              )}
             </Link>
           </div>
         </Toolbar>
