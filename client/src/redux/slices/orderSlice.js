@@ -30,6 +30,7 @@ export const orderSlide = createSlice({
         }
       } else {
         state.orderItems.push(orderItem);
+        state.isSucessOrder = true;
       }
     },
     resetOrder: (state) => {

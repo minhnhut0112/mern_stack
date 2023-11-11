@@ -1,12 +1,8 @@
-import { Alert, Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import React from "react";
-import { useLocation } from "react-router-dom";
 import imgsuccess from "../../assets/image/success.png";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const CheckOutSuccessPage = () => {
-  const location = useLocation();
-  const { state } = location;
   return (
     <>
       <Grid
@@ -14,7 +10,7 @@ const CheckOutSuccessPage = () => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          height: "90vh",
+          marginTop: 10,
         }}
       >
         <Grid item xs={5}>
@@ -44,15 +40,6 @@ const CheckOutSuccessPage = () => {
                 Your order will be shipped as soon as possible, please track
                 your order status
               </p>
-              <p>
-                <ArrowDownwardIcon />
-              </p>
-              <Button
-                sx={{ color: "black", borderColor: "black" }}
-                variant="outlined"
-              >
-                My Order
-              </Button>
             </div>
           </div>
         </Grid>

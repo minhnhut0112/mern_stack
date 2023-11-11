@@ -149,8 +149,7 @@ const CartComponent = () => {
                           handleChangeCount(
                             "increase",
                             item?.product,
-                            item?.amount === item.countInstock,
-                            item?.amount === 1
+                            item?.amount === item.countInstock
                           )
                         }
                       />
@@ -187,7 +186,7 @@ const CartComponent = () => {
             }}
           >
             <h3>Estimated Delivery: </h3>
-            <h3>5 $</h3>
+            <h3>0 $</h3>
           </div>
           <hr />
           <div
@@ -199,7 +198,7 @@ const CartComponent = () => {
             }}
           >
             <h3>Total:</h3>
-            <h3>{totalPrice + 5} $</h3>
+            <h3>{totalPrice} $</h3>
           </div>
           <hr />
           <div style={{ display: "flex", justifyContent: "center" }}>

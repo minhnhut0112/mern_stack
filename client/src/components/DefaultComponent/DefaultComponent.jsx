@@ -6,7 +6,7 @@ const DefaultComponent = ({ children }) => {
   return (
     <div>
       <HeaderComponent />
-      <div>{children}</div>
+      <div style={{ minHeight: "85vh" }}>{children}</div>
       <FooterComponent />
     </div>
   );

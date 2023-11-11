@@ -7,7 +7,7 @@ import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import TypeProduct from "../pages/TypeProduct/TypeProduct";
-import OrderPage from "../pages/OrderPage/OrderPage";
+import MyOrderPage from "../pages/MyOrderPage/MyOrderPage";
 import CheckOutPage from "../pages/CheckOutPage/CheckOutPage";
 import CheckOutSuccessPage from "../pages/CheckOutSuccessPage/CheckOutSuccessPage";
 
@@ -53,8 +53,8 @@ export const routes = [
     showHeaderAndFooter: true,
   },
   {
-    path: "/order",
-    page: OrderPage,
+    path: "/my-order",
+    page: MyOrderPage,
     showHeaderAndFooter: true,
   },
   {

@@ -142,28 +142,18 @@ const cancelOrderDetails = (id, data) => {
         const productData = await Product.findOneAndUpdate(
           {
             _id: order.product,
-            selled: { $gte: order.amount },
           },
           {
             $inc: {
               countInStock: +order.amount,
-              selled: -order.amount,
             },
           },
           { new: true }
         );
         if (productData) {
-          order = await Order.findByIdAndDelete(id);
-          if (order === null) {
-            resolve({
-              status: "ERR",
-              message: "The order is not defined",
-            });
-          }
+          await Order.findByIdAndDelete(id);
         } else {
           return {
-            status: "OK",
-            message: "ERR",
             id: order.product,
           };
         }
@@ -174,7 +164,7 @@ const cancelOrderDetails = (id, data) => {
       if (newData) {
         resolve({
           status: "ERR",
-          message: `San pham voi id: ${newData} khong ton tai`,
+          message: `product with id: ${newData} is not defined`,
         });
       }
       resolve({

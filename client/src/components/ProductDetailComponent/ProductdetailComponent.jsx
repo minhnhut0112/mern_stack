@@ -10,7 +10,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addOrderProduct } from "../../redux/slices/orderSlice";
+import { addOrderProduct, resetOrder } from "../../redux/slices/orderSlice";
+import { Alert, Snackbar } from "@mui/material";
 
 const ProductdetailComponent = ({ idProduct }) => {
   const hd = () => {
@@ -22,7 +23,14 @@ const ProductdetailComponent = ({ idProduct }) => {
     });
   };
 
+  const user = useSelector((state) => state.user);
+  const order = useSelector((state) => state.order);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const [numProduct, setNumProduct] = useState(1);
+  const [errorLimitOrder, setErrorLimitOrder] = useState(false);
+  const [mess, setMess] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const OnchangeNumberProduct = (e) => {
     setNumProduct(Number(e.target.value));
@@ -54,40 +62,88 @@ const ProductdetailComponent = ({ idProduct }) => {
     { enabled: !!idProduct.id }
   );
 
-  console.log(productDetails);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (order?.isSucessOrder) {
+      setMess(true);
+    }
+    return () => {
+      dispatch(resetOrder());
+    };
+  }, [order?.isSucessOrder]);
+
+  useEffect(() => {
+    const orderRedux = order?.orderItems?.find(
+      (item) => item.product === productDetails?._id
+    );
+    if (
+      orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
+      (!orderRedux && productDetails?.countInStock >= numProduct)
+    ) {
+      setErrorLimitOrder(false);
+    } else if (productDetails?.countInStock === 0) {
+      setErrorLimitOrder(true);
+    }
+  }, [numProduct]);
 
   const handleAddCart = () => {
     if (!user.id) {
       navigate("/sign-in", { state: location?.pathname });
     } else {
-      dispatch(
-        addOrderProduct({
-          orderItem: {
-            name: productDetails?.name,
-            amount: numProduct,
-            image: productDetails?.image,
-            price: productDetails?.price,
-            product: productDetails?._id,
-            discount: productDetails?.discount,
-            countInstock: productDetails?.countInStock,
-            size: selectedSize,
-          },
-        })
+      const orderRedux = order?.orderItems?.find(
+        (item) => item.product === productDetails?._id
       );
+      console.log("orderRedux", orderRedux);
+      if (
+        orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
+        (!orderRedux && productDetails?.countInStock >= numProduct)
+      ) {
+        dispatch(
+          addOrderProduct({
+            orderItem: {
+              name: productDetails?.name,
+              amount: numProduct,
+              image: productDetails?.image,
+              type: productDetails?.type,
+              price: productDetails?.price,
+              product: productDetails?._id,
+              discount: productDetails?.discount,
+              countInstock: productDetails?.countInStock,
+              size: selectedSize,
+            },
+          })
+        );
+      } else {
+        setErrorLimitOrder(true);
+      }
     }
+  };
+
+  const handleCloseMess = () => {
+    setMess(false);
   };
 
   return (
     <div>
+      {mess && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={2000}
+          onClose={handleCloseMess}
+        >
+          <Alert
+            onClose={handleCloseMess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Add cart is successfully !
+          </Alert>
+        </Snackbar>
+      )}
       <Grid
         container
         spacing={3}
@@ -184,7 +240,6 @@ const ProductdetailComponent = ({ idProduct }) => {
                   id="35"
                   name="size"
                   value={35}
-                  disabled={numProduct > productDetails?.countInStock}
                   checked={selectedSize === 35}
                   onChange={() => setSelectedSize(35)}
                 />
@@ -291,6 +346,11 @@ const ProductdetailComponent = ({ idProduct }) => {
               </Grid>
             </Grid>
           </div>
+          {errorLimitOrder && (
+            <div style={{ color: "red" }}>
+              Product is not in sufficient quantity
+            </div>
+          )}
           <button
             disabled={!selectedSize}
             className="row__content__addcart"

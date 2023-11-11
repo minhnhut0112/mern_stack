@@ -73,9 +73,20 @@ const UserComponent = () => {
               <MenuItem onClick={handleClose}>My Profile</MenuItem>
             </Link>
 
-            <Link style={{ color: "black" }} to="/order">
-              <MenuItem onClick={handleClose}>My Order</MenuItem>
-            </Link>
+            <div style={{ color: "black" }} onClick={handleClose}>
+              <MenuItem
+                onClick={() =>
+                  navigate("/my-order", {
+                    state: {
+                      id: user?.id,
+                      token: user?.access_token,
+                    },
+                  })
+                }
+              >
+                My Order
+              </MenuItem>
+            </div>
             {user?.isAdmin && (
               <div>
                 <Divider />
