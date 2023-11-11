@@ -12,17 +12,19 @@ const HeaderAdmin = () => {
         justifyContent: "space-between",
       }}
     >
-      <div
-        style={{
-          color: "black",
-          padding: 10,
-          fontSize: 20,
-          marginLeft: 10,
-          fontWeight: "bold",
-        }}
-      >
-        SPACE SNEAKER
-      </div>
+      <Link to="/">
+        <div
+          style={{
+            color: "black",
+            padding: 10,
+            fontSize: 20,
+            marginLeft: 10,
+            fontWeight: "bold",
+          }}
+        >
+          SPACE SNEAKER
+        </div>
+      </Link>
       <div style={{ padding: "10px 10px" }}>
         <UserComponent />
       </div>

@@ -4,10 +4,6 @@ import * as OrderService from "../../service/OrderService";
 import { useQuery } from "react-query";
 import TableComponent from "../TableComponent/TableComponent";
 import { Avatar, Button, Grid } from "@mui/material";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const AdminOrder = () => {
   const user = useSelector((state) => state?.user);
@@ -18,7 +14,16 @@ const AdminOrder = () => {
   };
 
   const queryOrder = useQuery({ queryKey: ["orders"], queryFn: getAllOrder });
-  const { isLoading: isLoadingOrders, data: orders } = queryOrder;
+  const {
+    isLoading: isLoadingOrders,
+    data: orders,
+    refetch: refetchOrders,
+  } = queryOrder;
+
+  const handleConfirmOrder = async (orderId) => {
+    await OrderService.updateOrder(orderId);
+    refetchOrders();
+  };
 
   const columns = [
     { field: "id", headerName: "QTT", width: 50 },
@@ -79,7 +84,7 @@ const AdminOrder = () => {
           <Button
             disabled={params.row.isDelivered}
             variant="outlined"
-            onClick={() => OrderService.updateOrder(params.row._id)}
+            onClick={() => handleConfirmOrder(params.row._id)}
           >
             Confirm
           </Button>
