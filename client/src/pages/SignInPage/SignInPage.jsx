@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutationHook } from "../../hooks/useMutationHook";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/slices/userSlice";
 import { Button, CircularProgress } from "@mui/material";
 
@@ -32,13 +32,10 @@ export default function SignInPage() {
 
   const navigate = useNavigate();
 
+  const user = useSelector((state) => state.user);
+
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
-      if (location.state) {
-        navigate(location.state);
-      } else {
-        navigate("/");
-      }
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
       localStorage.setItem(
         "refresh_token",
@@ -48,6 +45,15 @@ export default function SignInPage() {
         const decoded = jwt_decode(data?.access_token);
         if (decoded?.id) {
           handleGetDetailsUser(decoded?.id, data?.access_token);
+        }
+      }
+      if (location.state) {
+        navigate(location.state);
+      } else {
+        if (user?.isAdmin) {
+          navigate("/system/admin");
+        } else {
+          navigate("/");
         }
       }
     }

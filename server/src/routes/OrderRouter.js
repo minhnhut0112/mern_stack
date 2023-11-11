@@ -28,4 +28,6 @@ router.get(
   OrderController.getAllOrder
 );
 
+router.put("/update/:id", OrderController.updateOrder);
+
 module.exports = router;

@@ -158,10 +158,11 @@ const AdminUser = () => {
     {
       field: "avatar",
       headerName: "Avatar",
-      width: 80,
+      width: 100,
       renderCell: (params) => (
         <Avatar
-          sx={{ cursor: "pointer" }}
+          variant="rounded"
+          sx={{ cursor: "pointer", width: 70, height: 70 }}
           alt={params.value}
           src={params.value}
           onClick={() => setIdUser(params.row._id)}

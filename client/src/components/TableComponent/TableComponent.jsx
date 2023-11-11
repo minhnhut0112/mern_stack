@@ -5,7 +5,7 @@ import * as React from "react";
 export default function TableComponent(props) {
   const { rows = [], columns = [], isLoading = false } = props;
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: 540, width: "100%" }}>
       {isLoading ? (
         <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
       ) : (
@@ -19,6 +19,7 @@ export default function TableComponent(props) {
           }}
           pageSizeOptions={[5, 10]}
           checkboxSelection={false}
+          rowHeight={80}
         />
       )}
     </div>

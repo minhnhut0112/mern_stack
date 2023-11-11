@@ -96,7 +96,6 @@ const ProductdetailComponent = ({ idProduct }) => {
       const orderRedux = order?.orderItems?.find(
         (item) => item.product === productDetails?._id
       );
-      console.log("orderRedux", orderRedux);
       if (
         orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
         (!orderRedux && productDetails?.countInStock >= numProduct)

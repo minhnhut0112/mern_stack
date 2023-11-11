@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 
 const ProductDetailPage = () => {
   const paramId = useParams();
-  console.log(paramId);
   return <ProductdetailComponent idProduct={paramId} />;
 };
 

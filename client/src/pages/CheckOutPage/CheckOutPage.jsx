@@ -136,28 +136,13 @@ const CheckOutPage = () => {
 
   useEffect(() => {
     if (isSuccess && dataAdd?.status === "OK") {
-      const arrayOrdered = [];
-      order?.orderItems?.forEach((element) => {
-        arrayOrdered.push(element.product);
-      });
       dispatch(removeAllOrderProduct());
-      navigate("/checkoutSuccess", {
-        state: {
-          payment,
-          orders: order?.orderItems,
-          totalPrice: totalPrice,
-          fullName: user?.name,
-          address: user?.address,
-          phone: user?.phone,
-          email: user?.email,
-        },
-      });
+      navigate("/checkoutSuccess");
     } else if (isError) {
     }
   }, [isSuccess, isError]);
 
   const onSuccessPaypal = (details, data) => {
-    console.log("onSuccessPaypal is called");
     mutationAddOrder.mutate({
       token: user?.access_token,
       orderItems: order?.orderItems,

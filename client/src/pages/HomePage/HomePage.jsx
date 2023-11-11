@@ -24,7 +24,6 @@ const HomePage = () => {
       setSearchTitle(false);
     }
     const res = await ProductService.getAllProduct(search, limit);
-
     return res;
   };
 

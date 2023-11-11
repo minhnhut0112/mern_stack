@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
 import { getBase64 } from "../../utils";
 import * as ProductService from "../../service/ProductService";
 import { useMutationHook } from "../../hooks/useMutationHook";
@@ -27,7 +26,6 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
-import { useQuery, useQueryClient } from "react-query";
 import TableComponent from "../TableComponent/TableComponent";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -242,7 +240,14 @@ const AdminProduct = () => {
       field: "image",
       headerName: "image",
       width: 150,
-      renderCell: (params) => <Avatar alt={params.value} src={params.value} />,
+      renderCell: (params) => (
+        <Avatar
+          variant="rounded"
+          sx={{ width: 70, height: 70 }}
+          alt={params.value}
+          src={params.value}
+        />
+      ),
     },
     {
       field: "action",
@@ -337,9 +342,6 @@ const AdminProduct = () => {
       // Handle errors
     }
   };
-
-  console.log(type);
-  console.log(stateProduct.type);
 
   useEffect(() => {
     fetchAllTypeProduct();

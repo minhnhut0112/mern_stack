@@ -24,13 +24,13 @@ const MyOrderPage = () => {
   };
 
   const queryOrder = useQuery(
-    { queryKey: ["orders"], queryFn: fetchMyOrder },
+    { queryKey: ["myorders"], queryFn: fetchMyOrder },
     {
       enabled: state?.id && state?.token,
     }
   );
 
-  const { isLoading, data } = queryOrder;
+  const { isLoading, data, isSuccess } = queryOrder;
 
   const mutation = useMutationHook((data) => {
     const { id, token, orderItems, userId } = data;
@@ -39,7 +39,6 @@ const MyOrderPage = () => {
   });
 
   const handleCanceOrder = (order) => {
-    console.log("order", order);
     mutation.mutate(
       {
         id: order?._id,
@@ -69,8 +68,8 @@ const MyOrderPage = () => {
     }
   }, [isErrorCancle, isSuccessCancel]);
 
-  const renderProduct = (data) => {
-    return data?.map((order) => {
+  const renderProduct = (dataorder) => {
+    return dataorder?.map((order) => {
       return (
         <>
           <Grid container>
@@ -161,49 +160,50 @@ const MyOrderPage = () => {
         ) : (
           <Grid item xs={5}>
             <hr />
-            {data?.map((order) => {
-              return (
-                <>
-                  <div style={{ padding: "20px" }}>
-                    <div
-                      style={{
-                        textAlign: "end",
-                        color: "#26aa99",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      {order?.isDelivered
-                        ? "  Are delivering"
-                        : "  Wait for confirmation"}
-                    </div>
-                    <div>{renderProduct(order?.orderItems)}</div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop: 10,
-                      }}
-                    >
-                      <div>
-                        Total Price:{" "}
-                        <span style={{ color: "red" }}>
-                          $ {order?.totalPrice}
-                        </span>
+            {isSuccess &&
+              data?.map((order) => {
+                return (
+                  <>
+                    <div style={{ padding: "20px" }}>
+                      <div
+                        style={{
+                          textAlign: "end",
+                          color: "#26aa99",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {order?.isDelivered
+                          ? "  Are delivering"
+                          : "  Wait for confirmation"}
                       </div>
-                      {!order?.isDelivered && (
-                        <Button
-                          onClick={() => handleCanceOrder(order)}
-                          variant="outlined"
-                        >
-                          Cancel Orer
-                        </Button>
-                      )}
+                      <div>{renderProduct(order?.orderItems)}</div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginTop: 10,
+                        }}
+                      >
+                        <div>
+                          Total Price:{" "}
+                          <span style={{ color: "red" }}>
+                            $ {order?.totalPrice}
+                          </span>
+                        </div>
+                        {!order?.isDelivered && (
+                          <Button
+                            onClick={() => handleCanceOrder(order)}
+                            variant="outlined"
+                          >
+                            Cancel Orer
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <hr />
-                </>
-              );
-            })}
+                    <hr />
+                  </>
+                );
+              })}
           </Grid>
         )}
       </Grid>

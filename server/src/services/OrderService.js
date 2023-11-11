@@ -3,7 +3,6 @@ const Product = require("../models/ProductModel");
 // const EmailService = require("../services/EmailService");
 
 const createOrder = (newOrder) => {
-  console.log("newOrder", newOrder);
   return new Promise(async (resolve, reject) => {
     const {
       orderItems,
@@ -17,7 +16,6 @@ const createOrder = (newOrder) => {
       paidAt,
       email,
     } = newOrder;
-    console.log(newOrder);
     try {
       const promises = orderItems.map(async (order) => {
         const productData = await Product.findOneAndUpdate(
@@ -80,7 +78,6 @@ const createOrder = (newOrder) => {
         }
       }
     } catch (e) {
-      console.log(e);
       reject(e);
     }
   });
@@ -196,10 +193,43 @@ const getAllOrder = () => {
   });
 };
 
+const updateOrder = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkOrder = await Order.findOne({
+        _id: id,
+      });
+      if (checkOrder === null) {
+        resolve({
+          status: "OK",
+          message: "The order is not defined",
+        });
+      }
+
+      const updatedProduct = await Order.findByIdAndUpdate(
+        id,
+        { $set: { isDelivered: true } },
+        {
+          new: true,
+        }
+      );
+
+      resolve({
+        status: "OK",
+        message: "Updated order success",
+        data: updatedProduct,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createOrder,
   getAllOrderDetails,
   getOrderDetails,
   cancelOrderDetails,
   getAllOrder,
+  updateOrder,
 };
