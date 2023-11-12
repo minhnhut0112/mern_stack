@@ -9,10 +9,8 @@ import * as UserService from "../../service/UserService";
 import { useMutationHook } from "../../hooks/useMutationHook";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
-
 const SignUpPage = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,9 +36,11 @@ const SignUpPage = () => {
   const mutation = useMutationHook((data) => UserService.signUpUser(data));
   const { data, isLoading } = mutation;
 
+  const [message, setMessage] = useState("Sign Up is success, Login now");
+
   useEffect(() => {
     if (data?.status === "True") {
-      navigate("/sign-in");
+      navigate("/sign-in", { state: { message } });
     }
   }, [data]);
 
@@ -90,9 +90,11 @@ const SignUpPage = () => {
           <div>
             <h2 style={{ marginTop: "60px" }}>Sign Up</h2>
           </div>
-          {data?.status === "Err" && (
-            <span style={{ color: "red" }}>{data?.message}</span>
-          )}
+          <div
+            style={{ color: "red", marginBottom: "10px", marginTop: "10px" }}
+          >
+            {data?.status === "Err" && <span>{data?.message}</span>}
+          </div>
           <InputComponent
             value={email}
             handleOnChange={handleOnChangeEmail}
@@ -116,37 +118,39 @@ const SignUpPage = () => {
             value={password}
             handleOnChange={handleOnChangePassword}
             type="password"
-            label="PassWord"
+            label="Password"
           />
           <InputComponent
             value={confirmPassword}
             handleOnChange={handleOnChangeConfirmPassword}
             type="password"
-            label="Confirm PassWord"
+            label="Confirm Password"
           />
-          <Button
-            variant="outlined"
-            sx={{
-              width: { xs: "90%", md: "80%" },
-              height: "40px",
-              marginBottom: "20px",
-            }}
-            disabled={
-              !email.length ||
-              !password.length ||
-              !name ||
-              !confirmPassword ||
-              !phone ||
-              isLoading === true
-            }
-            onClick={handleSignUp}
-          >
-            {isLoading ? (
-              <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
-            ) : (
-              <div>Sign Up</div>
-            )}
-          </Button>
+          <span style={{ cursor: "not-allowed" }}>
+            <Button
+              variant="outlined"
+              sx={{
+                width: { xs: "90%", md: "80%" },
+                height: "40px",
+                marginBottom: "20px",
+              }}
+              disabled={
+                !email.length ||
+                !password.length ||
+                !name ||
+                !confirmPassword ||
+                !phone ||
+                isLoading === true
+              }
+              onClick={handleSignUp}
+            >
+              {isLoading ? (
+                <CircularProgress sx={{ marginLeft: "20px" }} size="25px" />
+              ) : (
+                <div>Sign Up</div>
+              )}
+            </Button>
+          </span>
 
           <Grid container>
             <Grid

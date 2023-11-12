@@ -14,7 +14,6 @@ const TypeProduct = () => {
 
   const location = useLocation();
   const pathname = location.pathname;
-  // Sử dụng các phương thức JavaScript để trích xuất phần bạn quan tâm từ địa chỉ URL.
   const parts = pathname.split("/");
   const productCategory = parts[parts.length - 1];
 

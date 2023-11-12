@@ -32,6 +32,8 @@ export default function SignInPage() {
 
   const navigate = useNavigate();
 
+  const { state } = useLocation();
+
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -107,8 +109,15 @@ export default function SignInPage() {
           }}
         >
           <h2 style={{ marginTop: "60px" }}>Sign In</h2>
-          <div style={{ color: "red", marginBottom: "10px" }}>
+          <div
+            style={{ color: "red", marginBottom: "10px", marginTop: "10px" }}
+          >
             {data?.status === "Err" && <span>{data?.message}</span>}
+          </div>
+          <div
+            style={{ color: "green", marginBottom: "10px", marginTop: "10px" }}
+          >
+            {state?.message && <span>{state?.message}</span>}
           </div>
           <InputComponent
             style={{ width: "50%" }}
@@ -121,7 +130,7 @@ export default function SignInPage() {
             value={password}
             handleOnChange={handleOnChangePassword}
             type="password"
-            label="PassWord"
+            label="Password"
           />
           <span style={{ cursor: "not-allowed" }}>
             <Button
@@ -152,9 +161,7 @@ export default function SignInPage() {
                 marginLeft: { xs: "30px", md: "40px" },
                 marginBottom: { xs: "20px" },
               }}
-            >
-              <Link>Forgot password?</Link>
-            </Grid>
+            ></Grid>
             <Grid
               item
               xs={12}

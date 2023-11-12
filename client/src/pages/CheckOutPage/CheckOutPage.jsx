@@ -291,7 +291,7 @@ const CheckOutPage = () => {
             }}
           >
             <h3>Estimated Delivery: </h3>
-            <h3>0 $</h3>
+            <h3>Free</h3>
           </div>
           <hr />
           <div

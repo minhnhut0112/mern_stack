@@ -17,12 +17,7 @@ const createUser = async (req, res) => {
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "Err",
-        message: "The input is email",
-      });
-    } else if (password !== confirmPassword) {
-      return res.status(200).json({
-        status: "Err",
-        message: "The password is equal confirmPassword",
+        message: "The Email invalidate",
       });
     } else if (!isCheckPhone) {
       return res.status(200).json({
@@ -33,6 +28,17 @@ const createUser = async (req, res) => {
       return res.status(200).json({
         status: "Err",
         message: "The phone is 10 number",
+      });
+    } else if (password.length < Number(8)) {
+      console.log(password.length);
+      return res.status(200).json({
+        status: "Err",
+        message: "Password must be at least 8 characters",
+      });
+    } else if (password !== confirmPassword) {
+      return res.status(200).json({
+        status: "Err",
+        message: "The password is equal confirmPassword",
       });
     }
 
@@ -59,10 +65,9 @@ const loginUser = async (req, res) => {
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "Err",
-        message: "The input is email",
+        message: "The Email invalidate",
       });
     }
-
     const response = await UserService.loginUser(req.body);
     const { refresh_token, ...newResponse } = response;
     res.cookie("refresh_token", refresh_token, {
