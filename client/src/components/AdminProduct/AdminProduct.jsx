@@ -74,14 +74,7 @@ const AdminProduct = () => {
 
   const mutation = useMutationHook((data) => {
     const { name, price, image, type, countInStock, discount } = data;
-    const res = ProductService.createProduct({
-      name,
-      price,
-      image,
-      type,
-      countInStock,
-      discount,
-    });
+    const res = ProductService.createProduct(data, user?.access_token);
     return res;
   });
 
@@ -365,7 +358,7 @@ const AdminProduct = () => {
           </Alert>
         </Snackbar>
       )}
-      <div>Product Manager</div>
+      <h2>Product Manager</h2>
       <div style={{ marginTop: "20px" }}>
         <Button
           variant="outlined"

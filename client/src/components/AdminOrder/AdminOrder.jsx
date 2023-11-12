@@ -52,7 +52,7 @@ const AdminOrder = () => {
     },
     {
       field: "shippingAddress",
-      headerName: "shippingAddress",
+      headerName: "Order Info",
       width: 350,
       renderCell: (params) => (
         <div style={{ fontSize: 12 }}>
@@ -63,10 +63,7 @@ const AdminOrder = () => {
             <strong>Address:</strong> {params.value.address}
           </p>
           <p>
-            <strong>Email:</strong> {params.value.email}
-          </p>
-          <p>
-            <strong>Phone:</strong> {params.value.phone}
+            <strong>Phone:</strong> 0{params.value.phone}
           </p>
         </div>
       ),
@@ -105,7 +102,7 @@ const AdminOrder = () => {
 
   return (
     <div>
-      <div>Order Manager</div>
+      <h2>Order Manager</h2>
       <div style={{ marginTop: "20px" }}>
         <TableComponent
           rows={rows}

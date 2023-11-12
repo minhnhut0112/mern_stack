@@ -33,6 +33,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AdminUser = () => {
+  const user = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
   const [idUser, setIdUser] = useState("");
@@ -91,7 +92,7 @@ const AdminUser = () => {
   };
 
   const getAllUser = async () => {
-    const res = await UserService.getAllUser();
+    const res = await UserService.getAllUser(user?.access_token);
     return res;
   };
 
@@ -127,8 +128,6 @@ const AdminUser = () => {
     isSuccess: isSuccessUpdated,
     data: dataUpdated,
   } = mutationUpdateUser;
-
-  const user = useSelector((state) => state.user);
 
   const handleUpdateUser = () => {
     mutationUpdateUser.mutate(
@@ -265,7 +264,7 @@ const AdminUser = () => {
           </Alert>
         </Snackbar>
       )}
-      <div>User Manager</div>
+      <h2>User Manager</h2>
       <div style={{ marginTop: "20px" }}>
         <Modal
           open={open}

@@ -49,6 +49,12 @@ const CheckOutPage = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (order?.orderItems?.length <= 0) {
+      navigate("/");
+    }
+  }, []);
+
   const handleOnChangeInput = (e) => {
     setuserState({
       ...userState,
@@ -341,7 +347,11 @@ const CheckOutPage = () => {
               </div>
             ) : (
               <>
-                <button className="addcart" onClick={handleCheckOut}>
+                <button
+                  style={{ cursor: "pointer" }}
+                  className="addcart"
+                  onClick={handleCheckOut}
+                >
                   Order now
                 </button>
               </>

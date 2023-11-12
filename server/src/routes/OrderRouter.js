@@ -8,26 +8,22 @@ const {
 
 router.post(
   "/create/:id",
-  // authorityUserMiddleware,
+  authorityUserMiddleware,
   OrderController.createOrder
 );
 router.get(
   "/get-all-order/:id",
-  // authorityUserMiddleware,
+  authorityUserMiddleware,
   OrderController.getAllOrderDetails
 );
 router.get("/get-details-order/:id", OrderController.getDetailsOrder);
 router.delete(
   "/cancel-order/:id",
-  // authorityUserMiddleware,
+  authorityUserMiddleware,
   OrderController.cancelOrderDetails
 );
-router.get(
-  "/get-all-order",
-  // authorityMiddleware,
-  OrderController.getAllOrder
-);
+router.get("/get-all-order", authorityMiddleware, OrderController.getAllOrder);
 
-router.put("/update/:id", OrderController.updateOrder);
+router.put("/update/:id", authorityMiddleware, OrderController.updateOrder);
 
 module.exports = router;

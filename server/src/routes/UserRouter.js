@@ -11,24 +11,20 @@ router.post("/sign-in", userController.loginUser);
 router.post("/log-out", userController.logoutUser);
 router.put(
   "/update-user/:id",
-  // authorityUserMiddleware,
+  authorityUserMiddleware,
   userController.updateUser
 );
 router.delete(
   "/delete-user/:id",
-  // authorityMiddleware,
+  authorityMiddleware,
   userController.deleteUser
 );
 router.get(
   "/get-details/:id",
-  // authorityUserMiddleware,
+  authorityUserMiddleware,
   userController.getdetailsUser
 );
-router.get(
-  "/getAll",
-  // authorityMiddleware,
-  userController.getAllUser
-);
+router.get("/getAll", authorityMiddleware, userController.getAllUser);
 
 router.post("/refresh-token", userController.refreshToken);
 

@@ -72,7 +72,7 @@ const CartComponent = () => {
       >
         <Grid item xs={12} sm={8} md={7}>
           <h2 style={{ marginBottom: 10 }}>Bag</h2>
-          {order?.orderItems?.length == 0 && (
+          {order?.orderItems?.length === 0 && (
             <>
               <h4 style={{ margin: "10px 10px" }}>Bag is empty</h4> <hr />
             </>
@@ -202,7 +202,12 @@ const CartComponent = () => {
           </div>
           <hr />
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <button className="addcart" onClick={() => handleAddOrder()}>
+            <button
+              style={{ cursor: "pointer" }}
+              className="addcart"
+              disabled={!order?.orderItems?.length}
+              onClick={() => handleAddOrder()}
+            >
               Check Out
             </button>
           </div>

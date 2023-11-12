@@ -25,7 +25,7 @@ const HeaderAdmin = () => {
           SPACE SNEAKER
         </div>
       </Link>
-      <div style={{ padding: "10px 10px" }}>
+      <div style={{ padding: "10px 10px", cursor: "pointer" }}>
         <UserComponent />
       </div>
     </div>

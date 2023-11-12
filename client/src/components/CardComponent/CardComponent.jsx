@@ -11,12 +11,15 @@ const CardComponent = (props) => {
   return (
     <div className="box" onClick={() => handleDetailsProduct(id)}>
       <div className="box__image">
-        <img src={image} alt="product1" />
+        <img src={image} alt="product1" style={{ height: "450px" }} />
       </div>
-      <h4>{name}</h4>
-      <h5>{type}</h5>
+      <p style={{ fontSize: 20, marginTop: 10 }}>{name}</p>
+      <p style={{ fontSize: 17, margin: "5px 0px" }}>{type}</p>
       <p>
-        $ {price} <span style={{ color: "red" }}>{discount || 15}</span>
+        <span style={{ color: "#929292", textDecoration: "line-through" }}>
+          ${price}
+        </span>{" "}
+        <span style={{ color: "red" }}>${price - discount}</span>
       </p>
     </div>
   );

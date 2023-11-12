@@ -12,6 +12,8 @@ import { resetUser } from "../../../redux/slices/userSlice";
 import { useState } from "react";
 import { useEffect } from "react";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { removeAllOrderProduct } from "../../../redux/slices/orderSlice";
+import { Avatar } from "@mui/material";
 
 const UserComponent = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,12 +30,14 @@ const UserComponent = () => {
   const user = useSelector((state) => state.user);
 
   const disPatch = useDispatch();
+  const disPatchOrder = useDispatch();
 
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await UserService.logoutUser();
     disPatch(resetUser());
+    disPatchOrder(removeAllOrderProduct());
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     navigate("/sign-in");
@@ -57,7 +61,13 @@ const UserComponent = () => {
               aria-expanded={open ? "true" : undefined}
               style={{ display: "flex", alignItems: "center" }}
             >
-              {userName} <PersonOutlineIcon />
+              {userName}{" "}
+              <Avatar
+                src={user?.avatar}
+                style={{ width: "20px", height: "20px", marginLeft: "10px" }}
+              >
+                {userName}
+              </Avatar>
             </div>
           </Box>
           <Menu
