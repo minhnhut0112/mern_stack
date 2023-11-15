@@ -42,8 +42,6 @@ function App() {
           const data = await UserService.refreshToken(refreshToken);
           config.headers["token"] = `Bearer ${data?.access_token}`;
         }
-        // } else {
-        //   disPatch(resetUser());
       }
       return config;
     },

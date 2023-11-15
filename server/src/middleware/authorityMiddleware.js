@@ -55,12 +55,12 @@ const authorityUserMiddleware = (req, res, next) => {
         message: "The authentication user is not success",
       });
     }
-    if (user?.isAdmin || user?._id === userId) {
+    if (user?.isAdmin || user?.id === userId) {
       next();
     } else {
       return res.status(404).json({
         status: "Err",
-        message: "The authentication user user is not success",
+        message: "The authentication user is not success",
       });
     }
   });
