@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
@@ -6,7 +6,7 @@ import { isJsonString } from "./utils";
 import { useDispatch, useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
 import * as UserService from "./service/UserService";
-import { resetUser, updateUser } from "./redux/slices/userSlice";
+import { updateUser } from "./redux/slices/userSlice";
 
 function App() {
   const disPatch = useDispatch();

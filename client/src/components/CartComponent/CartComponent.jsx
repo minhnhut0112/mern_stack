@@ -96,7 +96,9 @@ const CartComponent = () => {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <h3>{item.name}</h3>
+                    <h3 style={{ width: "80%", marginRight: "10px" }}>
+                      {item.name}
+                    </h3>
                     <h3>
                       <span
                         style={{
@@ -105,11 +107,10 @@ const CartComponent = () => {
                           marginRight: 10,
                         }}
                       >
-                        $ {item?.price * item?.amount}
+                        ${item?.price * item?.amount}
                       </span>
                       <span style={{ color: "red" }}>
-                        ${" "}
-                        {(item?.price - (item?.discount || 15)) * item?.amount}
+                        ${(item?.price - (item?.discount || 15)) * item?.amount}
                       </span>
                     </h3>
                   </div>
@@ -124,6 +125,7 @@ const CartComponent = () => {
                       }}
                     >
                       <RemoveIcon
+                        style={{ cursor: "pointer" }}
                         onClick={() =>
                           handleChangeCount(
                             "decrease",
@@ -145,6 +147,7 @@ const CartComponent = () => {
                         disabled
                       />
                       <AddIcon
+                        style={{ cursor: "pointer" }}
                         onClick={() =>
                           handleChangeCount(
                             "increase",
@@ -157,6 +160,7 @@ const CartComponent = () => {
                   </div>
                   <div style={{ marginTop: 10 }}>
                     <DeleteOutlineOutlinedIcon
+                      style={{ cursor: "pointer" }}
                       onClick={() => handleDeleteOrder(item?.product)}
                     />
                   </div>
@@ -203,7 +207,6 @@ const CartComponent = () => {
           <hr />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <button
-              style={{ cursor: "pointer" }}
               className="addcart"
               disabled={!order?.orderItems?.length}
               onClick={() => handleAddOrder()}

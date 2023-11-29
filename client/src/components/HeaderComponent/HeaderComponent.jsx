@@ -19,9 +19,9 @@ import logomini2 from "../../assets/image/conver-logo.png";
 import logobig from "../../assets/image/logo-nike.png";
 import { useState } from "react";
 import * as ProductService from "../../service/ProductService";
-import { useDispatch, useSelector } from "react-redux";
-import { searchProduct } from "../../redux/slices/productSlice";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import BasicModal from "../ModalSearch";
 
 const HeaderComponent = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -31,12 +31,6 @@ const HeaderComponent = () => {
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const dispatch = useDispatch();
-
-  const handleOnChangeSearch = (e) => {
-    dispatch(searchProduct(e.target.value));
   };
 
   const fetchAllTypeProduct = async () => {
@@ -60,6 +54,12 @@ const HeaderComponent = () => {
 
   const order = useSelector((state) => state.order);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <AppBar
       style={{
@@ -73,7 +73,7 @@ const HeaderComponent = () => {
         style={{
           backgroundColor: "#f5f5f5",
           height: "30px",
-          padding: "0px 36px",
+          padding: "0px 20px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -203,7 +203,8 @@ const HeaderComponent = () => {
             }}
           >
             <div style={{ cursor: "pointer" }}>
-              <SearchComponent onChange={handleOnChangeSearch} />
+              <SearchComponent onClick={() => setModalOpen(true)} />
+              <BasicModal open={modalOpen} onClose={handleModalClose} />
             </div>
             <Link to="/cart" style={{ color: "black" }}>
               {user?.id ? (

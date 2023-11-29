@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import * as OrderService from "../../service/OrderService";
 import { useQuery } from "react-query";
 import TableComponent from "../TableComponent/TableComponent";
-import { Avatar, Button, Grid } from "@mui/material";
+import { Alert, Avatar, Button, Grid, Snackbar } from "@mui/material";
+import { useState } from "react";
 
 const AdminOrder = () => {
   const user = useSelector((state) => state?.user);
@@ -21,8 +22,11 @@ const AdminOrder = () => {
   } = queryOrder;
 
   const handleConfirmOrder = async (orderId) => {
-    await OrderService.updateOrder(orderId);
-    refetchOrders();
+    const res = await OrderService.updateOrder(orderId);
+    if (res.status === "OK") {
+      refetchOrders();
+      setOpenMess(true);
+    }
   };
 
   const columns = [
@@ -100,8 +104,33 @@ const AdminOrder = () => {
     };
   });
 
+  const [openMess, setOpenMess] = useState(false);
+
+  const handleCloseMess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenMess(false);
+  };
+
   return (
     <div>
+      {openMess && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={2000}
+          onClose={handleCloseMess}
+        >
+          <Alert
+            onClose={handleCloseMess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Confirm is successfully!
+          </Alert>
+        </Snackbar>
+      )}
       <h2>Order Manager</h2>
       <div style={{ marginTop: "20px" }}>
         <TableComponent

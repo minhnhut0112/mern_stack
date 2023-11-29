@@ -1,7 +1,18 @@
-import { Alert, Button, Grid, Skeleton, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Skeleton,
+  Snackbar,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import * as OrderService from "../../service/OrderService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useQuery } from "react-query";
 import { useMutationHook } from "../../hooks/useMutationHook";
@@ -9,6 +20,8 @@ import { useMutationHook } from "../../hooks/useMutationHook";
 const MyOrderPage = () => {
   const [mess, setMess] = useState(false);
   const [messErr, setMessErr] = useState(false);
+  const [openComfirm, setopenComfirm] = useState(false);
+
   const location = useLocation();
   const { state } = location;
   const user = useSelector((state) => state.user);
@@ -63,10 +76,14 @@ const MyOrderPage = () => {
   useEffect(() => {
     if (isSuccessCancel && dataCancel?.status === "OK") {
       setMess(true);
+      handleClose();
     } else if (isSuccessCancel && dataCancel?.status === "ERR") {
       setMessErr(true);
+      handleClose();
     }
   }, [isErrorCancle, isSuccessCancel]);
+
+  const navigate = useNavigate();
 
   const renderProduct = (dataorder) => {
     return dataorder?.map((order) => {
@@ -74,7 +91,13 @@ const MyOrderPage = () => {
         <>
           <Grid container>
             <Grid item>
-              <img src={order.image} alt="" width={90} />
+              <img
+                src={order.image}
+                alt=""
+                width={90}
+                onClick={() => navigate(`/product-detail/${order?.product}`)}
+                style={{ cursor: "pointer" }}
+              />
             </Grid>
             <Grid item>
               <div style={{ marginLeft: 30 }}>
@@ -93,6 +116,7 @@ const MyOrderPage = () => {
                     $ {order?.price - (order?.discount || 15)}
                   </span>
                 </div>
+                <p>Size: {order.size}</p>
                 <p>x {order?.amount}</p>
               </div>
             </Grid>
@@ -100,6 +124,10 @@ const MyOrderPage = () => {
         </>
       );
     });
+  };
+
+  const handleClose = () => {
+    setopenComfirm(false);
   };
 
   return (
@@ -158,7 +186,7 @@ const MyOrderPage = () => {
             sx={{ width: "41%", height: "200px" }}
           />
         ) : (
-          <Grid item xs={5}>
+          <Grid item xs={10} md={5}>
             <hr />
             {isSuccess &&
               data?.map((order) => {
@@ -191,12 +219,30 @@ const MyOrderPage = () => {
                           </span>
                         </div>
                         {!order?.isDelivered && (
-                          <Button
-                            onClick={() => handleCanceOrder(order)}
-                            variant="outlined"
-                          >
-                            Cancel Orer
-                          </Button>
+                          <>
+                            <Button
+                              onClick={() => setopenComfirm(true)}
+                              variant="outlined"
+                            >
+                              Cancel Orer
+                            </Button>
+                            <Dialog open={openComfirm} onClose={handleClose}>
+                              <DialogTitle>Confirm Deletion</DialogTitle>
+                              <DialogContent>
+                                Are you sure you want to remove this product
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={handleClose}>Disagree</Button>
+                                <Button
+                                  color="error"
+                                  onClick={() => handleCanceOrder(order)}
+                                  autoFocus
+                                >
+                                  <>AGREE</>
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
+                          </>
                         )}
                       </div>
                     </div>

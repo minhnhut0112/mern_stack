@@ -5,7 +5,7 @@ const SearchComponent = (props) => {
   return (
     <div className="search">
       <SearchIcon style={{ color: "black" }} id="search-icon" {...props} />
-      <input placeholder="Search..." {...props} type="search" />
+      <input placeholder="Search..." {...props} type="search" readOnly />
     </div>
   );
 };

@@ -32,7 +32,7 @@ export default function SignInPage() {
 
   const navigate = useNavigate();
 
-  const { state } = useLocation();
+  // const { state } = useLocation();
 
   const user = useSelector((state) => state.user);
 
@@ -114,11 +114,11 @@ export default function SignInPage() {
           >
             {data?.status === "Err" && <span>{data?.message}</span>}
           </div>
-          <div
+          {/* <div
             style={{ color: "green", marginBottom: "10px", marginTop: "10px" }}
           >
             {state?.message && <span>{state?.message}</span>}
-          </div>
+          </div> */}
           <InputComponent
             style={{ width: "50%" }}
             value={email}

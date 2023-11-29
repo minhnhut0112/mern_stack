@@ -63,7 +63,12 @@ const AdminProduct = () => {
   const inittial = () => ({
     name: "",
     price: "",
-    image: "",
+    image: {
+      img1: "",
+      img2: "",
+      img3: "",
+      img4: "",
+    },
     type: "",
     countInStock: "",
     newtype: "",
@@ -73,7 +78,6 @@ const AdminProduct = () => {
   const [stateProduct, setStateProduct] = useState(inittial());
 
   const mutation = useMutationHook((data) => {
-    const { name, price, image, type, countInStock, discount } = data;
     const res = ProductService.createProduct(data, user?.access_token);
     return res;
   });
@@ -81,6 +85,16 @@ const AdminProduct = () => {
   const { isLoading, isSuccess, data } = mutation;
 
   const handleOnchange = (e) => {
+    if (e.target.name === "price") {
+      e.target.value = Math.max(1, parseInt(e.target.value, 10) || 0);
+    }
+    if (e.target.name === "countInStock") {
+      e.target.value = Math.max(1, parseInt(e.target.value, 10) || 0);
+    }
+    if (e.target.name === "discount") {
+      e.target.value = Math.max(1, parseInt(e.target.value, 10) || 0);
+    }
+
     setStateProduct({
       ...stateProduct,
       [e.target.name]: e.target.value,
@@ -89,12 +103,15 @@ const AdminProduct = () => {
 
   const handleOnChangeImage = async (e) => {
     const file = e.target.files[0];
-    if (!file.url && !file.preview) {
+    if (!file?.url && !file.preview) {
       file.preview = await getBase64(file);
     }
     setStateProduct({
       ...stateProduct,
-      image: file.preview,
+      image: {
+        ...stateProduct.image,
+        [e.target.name]: file.preview,
+      },
     });
   };
 
@@ -117,6 +134,7 @@ const AdminProduct = () => {
 
   const handleAddProduct = async () => {
     try {
+      console.log(stateProduct.image);
       const dateAdd = {
         name: stateProduct.name,
         price: stateProduct.price,
@@ -148,6 +166,7 @@ const AdminProduct = () => {
       handleClose();
       setOpenMess(true);
     } else if (data?.status === "Err") {
+      setOpenMess(true);
     }
   }, [isSuccess, data]);
 
@@ -237,7 +256,7 @@ const AdminProduct = () => {
         <Avatar
           variant="rounded"
           sx={{ width: 70, height: 70 }}
-          alt={params.value}
+          alt={params}
           src={params.value}
         />
       ),
@@ -271,6 +290,7 @@ const AdminProduct = () => {
         ...product,
         id: ++id,
         _id: product._id,
+        image: product.image.img1,
       };
     });
 
@@ -342,7 +362,7 @@ const AdminProduct = () => {
 
   return (
     <div>
-      {(openMess || openMessDeleted) && (
+      {openMess && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={true}
@@ -355,6 +375,22 @@ const AdminProduct = () => {
             sx={{ width: "100%" }}
           >
             This is a success message!
+          </Alert>
+        </Snackbar>
+      )}
+      {openMessDeleted && (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={2000}
+          onClose={handleCloseMess}
+        >
+          <Alert
+            onClose={handleCloseMess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            The product was deleted successfully!
           </Alert>
         </Snackbar>
       )}
@@ -448,7 +484,12 @@ const AdminProduct = () => {
                       value={stateProduct["price"]}
                       onChange={handleOnchange}
                       name="price"
-                      type="text"
+                      type="number"
+                      InputProps={{
+                        inputProps: {
+                          min: 1,
+                        },
+                      }}
                       label="Price"
                     />
                     <FormControl
@@ -484,7 +525,12 @@ const AdminProduct = () => {
                       value={stateProduct["countInStock"]}
                       onChange={handleOnchange}
                       name="countInStock"
-                      type="text"
+                      type="number"
+                      InputProps={{
+                        inputProps: {
+                          min: 1,
+                        },
+                      }}
                       label="CountInStock"
                     />
 
@@ -495,7 +541,12 @@ const AdminProduct = () => {
                       value={stateProduct["discount"]}
                       onChange={handleOnchange}
                       name="discount"
-                      type="text"
+                      type="number"
+                      InputProps={{
+                        inputProps: {
+                          min: 1,
+                        },
+                      }}
                       label="Discount"
                     />
                     {stateProduct.type === "addtype" && (
@@ -521,7 +572,7 @@ const AdminProduct = () => {
                   <Grid item xs={3}>
                     <Avatar
                       variant="square"
-                      src={stateProduct?.image && stateProduct?.image}
+                      src={stateProduct?.image.img1 && stateProduct?.image.img1}
                       sx={{ width: 120, height: 150, margin: "10px 0px" }}
                     >
                       Image
@@ -534,7 +585,7 @@ const AdminProduct = () => {
                       style={{
                         width: 120,
                         height: 40,
-                        marginTop: 0,
+                        marginTop: 10,
                         borderRadius: 0,
                       }}
                     >
@@ -551,17 +602,18 @@ const AdminProduct = () => {
                           whiteSpace: "nowrap",
                           width: 1,
                         }}
+                        name="img1"
                         onChange={handleOnChangeImage}
                         type="file"
                         accept="image/*"
                       />
                     </Button>
                   </Grid>
-                  {/* <Grid item xs={3}>
+                  <Grid item xs={3}>
                     <Avatar
                       variant="square"
-                      // src={stateProduct?.image && stateProduct?.image}
-                      sx={{ width: 120, height: 150 }}
+                      src={stateProduct?.image.img2 && stateProduct?.image.img2}
+                      sx={{ width: 120, height: 150, margin: "10px 0px" }}
                     >
                       Image 2
                     </Avatar>
@@ -577,14 +629,30 @@ const AdminProduct = () => {
                       }}
                     >
                       Image 2
-                      <VisuallyHiddenInput type="file" />
+                      <input
+                        style={{
+                          clip: "rect(0 0 0 0)",
+                          clipPath: "inset(50%)",
+                          height: 1,
+                          overflow: "hidden",
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          whiteSpace: "nowrap",
+                          width: 1,
+                        }}
+                        name="img2"
+                        onChange={handleOnChangeImage}
+                        type="file"
+                        accept="image/*"
+                      />
                     </Button>
                   </Grid>
                   <Grid item xs={3}>
                     <Avatar
                       variant="square"
-                      // src={stateProduct?.image && stateProduct?.image}
-                      sx={{ width: 120, height: 150 }}
+                      src={stateProduct?.image.img3 && stateProduct?.image.img3}
+                      sx={{ width: 120, height: 150, margin: "10px 0px" }}
                     >
                       Image 3
                     </Avatar>
@@ -600,12 +668,32 @@ const AdminProduct = () => {
                       }}
                     >
                       Image 3
-                      <VisuallyHiddenInput type="file" />
+                      <input
+                        style={{
+                          clip: "rect(0 0 0 0)",
+                          clipPath: "inset(50%)",
+                          height: 1,
+                          overflow: "hidden",
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          whiteSpace: "nowrap",
+                          width: 1,
+                        }}
+                        name="img3"
+                        onChange={handleOnChangeImage}
+                        type="file"
+                        accept="image/*"
+                      />
                     </Button>
                   </Grid>
 
                   <Grid item xs={3}>
-                    <Avatar variant="square" sx={{ width: 120, height: 150 }}>
+                    <Avatar
+                      variant="square"
+                      src={stateProduct?.image.img4 && stateProduct?.image.img4}
+                      sx={{ width: 120, height: 150, margin: "10px 0px" }}
+                    >
                       Image 4
                     </Avatar>
                     <Button
@@ -620,9 +708,25 @@ const AdminProduct = () => {
                       }}
                     >
                       Image 4
-                      <VisuallyHiddenInput type="file" />
+                      <input
+                        style={{
+                          clip: "rect(0 0 0 0)",
+                          clipPath: "inset(50%)",
+                          height: 1,
+                          overflow: "hidden",
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          whiteSpace: "nowrap",
+                          width: 1,
+                        }}
+                        name="img4"
+                        onChange={handleOnChangeImage}
+                        type="file"
+                        accept="image/*"
+                      />
                     </Button>
-                  </Grid> */}
+                  </Grid>
                 </Grid>
                 <hr style={{ marginRight: 30, marginBottom: "20px" }} />
                 <span style={{ display: "flex", justifyContent: "end" }}>
@@ -647,7 +751,10 @@ const AdminProduct = () => {
                             !stateProduct.type ||
                             !stateProduct.countInStock ||
                             !stateProduct.discount ||
-                            !stateProduct.image
+                            !stateProduct.image.img1 ||
+                            !stateProduct.image.img2 ||
+                            !stateProduct.image.img3 ||
+                            !stateProduct.image.img4
                           }
                           variant="outlined"
                           sx={{

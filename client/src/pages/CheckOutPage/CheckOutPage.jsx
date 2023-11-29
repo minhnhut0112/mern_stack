@@ -145,6 +145,7 @@ const CheckOutPage = () => {
       dispatch(removeAllOrderProduct());
       navigate("/checkoutSuccess");
     } else if (isError) {
+      alert("Something wrong");
     }
   }, [isSuccess, isError]);
 
@@ -172,7 +173,9 @@ const CheckOutPage = () => {
     script.onload = () => {
       setSdkReady(true);
     };
-    document.body.appendChild(script);
+    if (script) {
+      document.body.appendChild(script);
+    }
   };
 
   useEffect(() => {
@@ -335,13 +338,15 @@ const CheckOutPage = () => {
                         purchase_units: [
                           {
                             amount: {
-                              value: totalPrice, // Số tiền bạn muốn truyền vào
+                              value: totalPrice,
                             },
                           },
                         ],
                       });
                     }}
                     onApprove={onSuccessPaypal}
+                    onError={(error) => console.error("PayPal Error:", error)}
+                    debug={true}
                   />
                 </PayPalScriptProvider>
               </div>

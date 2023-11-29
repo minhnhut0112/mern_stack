@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { removeAllOrderProduct } from "../../../redux/slices/orderSlice";
 import { Avatar } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const UserComponent = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,12 +62,18 @@ const UserComponent = () => {
               aria-expanded={open ? "true" : undefined}
               style={{ display: "flex", alignItems: "center" }}
             >
-              {userName}{" "}
+              {userName}
               <Avatar
                 src={user?.avatar}
                 style={{ width: "20px", height: "20px", marginLeft: "10px" }}
               >
-                {userName}
+                {user?.avatar ? (
+                  userName
+                ) : (
+                  <>
+                    <AccountCircleIcon />
+                  </>
+                )}
               </Avatar>
             </div>
           </Box>

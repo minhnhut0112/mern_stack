@@ -13,7 +13,7 @@ const CheckOutSuccessPage = () => {
           marginTop: 10,
         }}
       >
-        <Grid item xs={5}>
+        <Grid item xs={8} md={5}>
           <div
             style={{
               borderRadius: "10px",

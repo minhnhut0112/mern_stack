@@ -4,9 +4,16 @@
     height: 45px;
     border-radius: 50px ;
     background-color: white;
+    cursor: pointer;
 }
 
 .addcart:hover{
     background-color: #111111;
     color: white;
+}
+
+.addcart:disabled {
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+    color: black;
 }
