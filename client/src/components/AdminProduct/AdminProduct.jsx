@@ -106,13 +106,15 @@ const AdminProduct = () => {
     if (!file?.url && !file.preview) {
       file.preview = await getBase64(file);
     }
-    setStateProduct({
-      ...stateProduct,
-      image: {
-        ...stateProduct.image,
-        [e.target.name]: file.preview,
-      },
-    });
+    if (file.preview) {
+      setStateProduct({
+        ...stateProduct,
+        image: {
+          ...stateProduct.image,
+          [e.target.name]: file.preview,
+        },
+      });
+    }
   };
 
   const getAllProduct = async () => {
